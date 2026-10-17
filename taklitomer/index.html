@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>תקליTומר</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Suez+One&family=Frank+Ruhl+Libre:wght@400;500;700&family=Rubik:wght@400;500;700&display=swap">
+<style>
+/* Layout: a record-shop counter. Sleeve-paper panels on a dark walnut ground, label-red + brass accents, tabs like divider cards in a crate */
+:root{
+  --bg:#efe3cc; --paper:#f8efdc; --ink:#2a1a12; --muted:#6e5646; --line:#cdb894;
+  --red:#a8321f; --brass:#b5862a; --vinyl:#1c1512; --green:#3f6b3a; --shadow:rgba(42,26,18,.18);
+  --chip:#e6d4b0;
+  --display:"Suez One","Frank Ruhl Libre",Georgia,serif;
+  --body:"Frank Ruhl Libre",Georgia,"Times New Roman",serif;
+  --ui:"Rubik",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1d1611; --paper:#2a2019; --ink:#f1e4c9; --muted:#bba68a; --line:#4a3a2c;
+  --red:#e0624a; --brass:#d9a945; --vinyl:#0c0907; --green:#86b07e; --shadow:rgba(0,0,0,.45); --chip:#3a2d22; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1d1611; --paper:#2a2019; --ink:#f1e4c9; --muted:#bba68a; --line:#4a3a2c;
+  --red:#e0624a; --brass:#d9a945; --vinyl:#0c0907; --green:#86b07e; --shadow:rgba(0,0,0,.45); --chip:#3a2d22; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
+  background-image:radial-gradient(circle at 20% 10%, color-mix(in srgb,var(--brass) 10%,transparent), transparent 40%),
+  repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in srgb,var(--ink) 2.5%,transparent) 3px 4px)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.15}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+.num{font-family:var(--ui);font-variant-numeric:tabular-nums}
+
+/* header */
+header.top{border-bottom:3px double var(--line);padding-block:18px 0}
+.brand{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:14px}
+.disc{width:58px;height:58px;border-radius:50%;flex:none;position:relative;
+  background:repeating-radial-gradient(circle,var(--vinyl) 0 2px,#2b221d 2px 3px);box-shadow:0 3px 10px var(--shadow)}
+.disc::after{content:"";position:absolute;inset:34%;border-radius:50%;background:var(--red);box-shadow:inset 0 0 0 4px color-mix(in srgb,var(--brass) 60%,var(--red))}
+.disc::before{content:"";position:absolute;inset:47%;border-radius:50%;background:var(--bg);z-index:2}
+@media (prefers-reduced-motion:no-preference){.disc{animation:spin 6s linear infinite}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.logo h1{font-size:clamp(2rem,6vw,3.1rem);color:var(--red);letter-spacing:.5px;text-shadow:2px 2px 0 color-mix(in srgb,var(--brass) 45%,transparent)}
+.logo h1 b{color:var(--ink);font-weight:400;font-family:"Rubik",sans-serif;font-weight:700}
+.tag{font-family:var(--ui);font-size:.8rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+.rate{display:flex;align-items:center;gap:8px;font-family:var(--ui);font-size:.85rem;color:var(--muted);flex-wrap:wrap}
+.rate input{width:76px;padding:4px 8px;border:1px solid var(--line);background:var(--paper);border-radius:3px;direction:ltr}
+.who{font-family:var(--ui);font-size:.85rem;padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}
+nav.tabs{display:flex;gap:6px;margin-top:16px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs button{flex:none;border:1px solid var(--line);border-bottom:none;background:var(--chip);padding:9px 16px 8px;border-radius:8px 8px 0 0;
+  font-family:var(--ui);font-weight:500;font-size:.92rem;cursor:pointer;color:var(--muted)}
+nav.tabs button[aria-selected="true"]{background:var(--paper);color:var(--red);position:relative;top:3px}
+main{padding-block:26px 60px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:4px;box-shadow:0 6px 20px var(--shadow);padding:22px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.sec-head h2{font-size:clamp(1.6rem,4vw,2.3rem)}
+.lede{color:var(--muted);max-width:68ch;margin:6px 0 0}
+.note{font-family:var(--ui);font-size:.8rem;color:var(--muted);border-inline-start:3px solid var(--brass);padding:6px 10px;background:color-mix(in srgb,var(--brass) 8%,transparent);margin:12px 0 0;max-width:90ch}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.controls input,.controls select{padding:8px 10px;border:1px solid var(--line);background:var(--bg);border-radius:3px;font-family:var(--ui);font-size:.9rem}
+.controls input{flex:1 1 220px;min-width:0}
+
+/* record table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th{font-family:var(--ui);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:start;padding:8px 10px;border-bottom:2px solid var(--ink);white-space:nowrap}
+td{padding:10px;border-bottom:1px dashed var(--line);vertical-align:middle}
+tr.rec{cursor:pointer}
+tr.rec:hover td{background:color-mix(in srgb,var(--brass) 9%,transparent)}
+.rank{font-family:var(--display);font-size:1.4rem;color:var(--red);width:48px}
+.t1{font-weight:700}
+.t2{color:var(--muted);font-size:.88rem}
+.price{font-family:var(--ui);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;direction:ltr;text-align:right}
+.chip{display:inline-block;font-family:var(--ui);font-size:.72rem;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--ink);white-space:nowrap}
+.chip.est{background:color-mix(in srgb,var(--brass) 25%,transparent)}
+.chip.doc{background:color-mix(in srgb,var(--green) 22%,transparent)}
+.lab{width:34px;height:34px;border-radius:50%;flex:none;background:repeating-radial-gradient(circle,var(--vinyl) 0 1.5px,#2b221d 1.5px 2.5px);position:relative}
+.lab i{position:absolute;inset:30%;border-radius:50%}
+.rcell{display:flex;align-items:center;gap:10px}
+.spark{width:110px;height:30px;display:block}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(20,12,8,.62);display:flex;align-items:center;justify-content:center;z-index:50;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.modal .panel{max-width:820px;width:100%;max-height:100%;overflow:auto}
+.close{float:left;border:1px solid var(--line);background:var(--bg);border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1.1rem}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+.kv div{border:1px solid var(--line);padding:10px 12px;border-radius:3px;background:var(--bg)}
+.kv span{display:block;font-family:var(--ui);font-size:.72rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.kv b{font-family:var(--ui);font-size:1.15rem;font-variant-numeric:tabular-nums}
+.chart{width:100%;height:auto;display:block;direction:ltr}
+.chart text{font-family:var(--ui);font-size:11px;fill:var(--muted)}
+
+/* history */
+.timeline{display:grid;gap:0;margin:18px 0 28px;border-inline-start:3px solid var(--red)}
+.era{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:12px 0 12px 0;padding-inline-start:16px;position:relative}
+.era::before{content:"";position:absolute;inset-inline-start:-9px;top:20px;width:15px;height:15px;border-radius:50%;background:var(--paper);border:3px solid var(--red)}
+.era .yr{font-family:var(--display);font-size:1.5rem;color:var(--red)}
+.era h3{font-size:1.15rem}
+.era p{margin:4px 0 0;color:var(--muted);max-width:70ch}
+.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.subtabs button{border:1px solid var(--line);background:var(--bg);padding:6px 14px;border-radius:999px;cursor:pointer;font-family:var(--ui);font-size:.88rem}
+.subtabs button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.yr-cell{font-family:var(--display);font-size:1.15rem;color:var(--red);width:64px}
+
+/* countries */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.ccard{border:1px solid var(--line);background:var(--bg);border-radius:4px;padding:14px;display:grid;gap:4px;min-width:0}
+.ccard .cn{font-family:var(--ui);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+.ccard h3{font-size:1.15rem}
+.ccard .t2{font-size:.85rem}
+
+/* store */
+.storebar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.btn{border:2px solid var(--ink);background:var(--ink);color:var(--paper);padding:9px 18px;border-radius:3px;cursor:pointer;font-family:var(--ui);font-weight:500}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff8ec}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:16px}
+.item{border:1px solid var(--line);background:var(--bg);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.sleeve{aspect-ratio:1/1;max-width:100%;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sleeve .vin{width:78%;aspect-ratio:1;border-radius:50%;background:repeating-radial-gradient(circle,var(--vinyl) 0 2px,#2b221d 2px 3px);position:relative;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.sleeve .vin i{position:absolute;inset:34%;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--ui);font-size:.62rem;color:#fff8ec;padding:4px;line-height:1.15;overflow:hidden}
+.item .body{padding:12px 14px;display:grid;gap:4px;flex:1}
+.item .price{text-align:start;font-size:1.2rem;color:var(--red)}
+.item .meta{font-family:var(--ui);font-size:.78rem;color:var(--muted)}
+.empty{text-align:center;padding:40px 16px;border:2px dashed var(--line);border-radius:4px;color:var(--muted);margin-top:16px}
+form.f{display:grid;gap:12px;max-width:520px}
+form.f label{display:grid;gap:4px;font-family:var(--ui);font-size:.85rem;color:var(--muted)}
+form.f input,form.f select,form.f textarea{padding:9px 11px;border:1px solid var(--line);background:var(--bg);border-radius:3px;font-family:var(--body);font-size:1rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.row2{grid-template-columns:1fr}.era{grid-template-columns:1fr;gap:2px}}
+.msg{font-family:var(--ui);font-size:.88rem;min-height:1.3em}
+.msg.err{color:var(--red)} .msg.ok{color:var(--green)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media (max-width:820px){.cols{grid-template-columns:1fr}}
+.cols>*{min-width:0}
+footer{font-family:var(--ui);font-size:.78rem;color:var(--muted);padding-block:20px 30px;border-top:3px double var(--line)}
+/* games */
+.gbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0}
+.gstats{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-family:var(--ui);font-size:.88rem;color:var(--muted)}
+.gstats b{color:var(--ink);font-size:1.1rem}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+.mcard{aspect-ratio:1/1;max-width:100%;perspective:700px;border:none;background:none;padding:0;cursor:pointer}
+.mcard .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.mcard.up .in,.mcard.got .in{transform:rotateY(180deg)}
+.mcard .fc,.mcard .bk{position:absolute;inset:0;border-radius:4px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center}
+.mcard .bk{background:repeating-linear-gradient(45deg,var(--red) 0 8px,color-mix(in srgb,var(--red) 80%,var(--ink)) 8px 16px);border:3px solid var(--brass);box-shadow:0 3px 8px var(--shadow)}
+.mcard .bk::after{content:"T";font-family:var(--display);font-size:2rem;color:#f8efdc;width:46%;aspect-ratio:1;border-radius:50%;background:var(--vinyl);display:flex;align-items:center;justify-content:center}
+.mcard .fc{transform:rotateY(180deg);background:var(--paper);border:1px solid var(--line)}
+.mcard .fc .v{width:92%;aspect-ratio:1;border-radius:50%;background:repeating-radial-gradient(circle,var(--vinyl) 0 1.5px,#2b221d 1.5px 2.5px);position:relative}
+.mcard .fc .v i{position:absolute;inset:18%;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff8ec;font-style:normal;padding:6px;overflow:hidden;line-height:1.1}
+.mcard .fc .v i b{font-family:var(--ui);font-size:.66rem;font-weight:700}
+.mcard .fc .v i small{font-family:var(--ui);font-size:.55rem;opacity:.85;margin-top:2px}
+.mcard.got .fc{outline:3px solid var(--green);outline-offset:-3px}
+@media (prefers-reduced-motion:reduce){.mcard .in{transition:none}}
+.gdone{margin-top:16px;padding:16px;border:2px solid var(--green);border-radius:4px;font-family:var(--ui);text-align:center}
+.duel{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch}
+@media (max-width:620px){.duel{grid-template-columns:1fr}}
+.vs{font-family:var(--display);font-size:1.8rem;color:var(--red);align-self:center;text-align:center}
+.pick{border:2px solid var(--line);background:var(--bg);border-radius:4px;padding:16px;cursor:pointer;text-align:start;display:grid;gap:6px;justify-items:start;min-width:0}
+.pick:hover:not(:disabled){border-color:var(--ink)}
+.pick.right{border-color:var(--green);background:color-mix(in srgb,var(--green) 12%,var(--bg))}
+.pick.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--bg))}
+.pick .lab{width:56px;height:56px}
+.quiz{display:grid;gap:14px}
+.qcard{border:1px solid var(--line);background:var(--bg);border-radius:4px;padding:18px;display:flex;gap:16px;align-items:center}
+.qcard .lab{width:70px;height:70px}
+.qcard h3{font-size:1.4rem}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.opt{border:2px solid var(--line);background:var(--paper);border-radius:3px;padding:12px;cursor:pointer;font-family:var(--ui);font-size:1rem}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.right{border-color:var(--green);background:color-mix(in srgb,var(--green) 15%,var(--paper))}
+.opt.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 12%,var(--paper))}
+.link{background:none;border:none;color:var(--red);text-decoration:underline;cursor:pointer;padding:0;font-family:var(--ui);font-size:.85rem}
+</style>
+
+<div dir="rtl" lang="he">
+<header class="top"><div class="wrap">
+  <div class="brand">
+    <div class="logo"><div class="disc" aria-hidden="true"></div>
+      <div><h1>תקליT<b>ומר</b></h1><div class="tag">Rare Records · Since 1877 · ארכיון התקליטים הנדירים</div></div>
+    </div>
+    <div class="rate">
+      <label for="rateIn">שער דולר:</label><input id="rateIn" type="number" step="0.01" min="1" value="3.65"> ₪
+      <span class="who" id="whoChip">אורח</span>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" id="tabs">
+    <button data-tab="world" aria-selected="true">הנדירים בעולם</button>
+    <button data-tab="israel" aria-selected="false">הנדירים בארץ</button>
+    <button data-tab="history" aria-selected="false">היסטוריה ושנים</button>
+    <button data-tab="countries" aria-selected="false">לפי מדינה</button>
+    <button data-tab="games" aria-selected="false">משחקים</button>
+    <button data-tab="store" aria-selected="false">החנות</button>
+    <button data-tab="account" aria-selected="false">החשבון שלי</button>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <!-- WORLD -->
+  <section id="tab-world" class="panel">
+    <div class="sec-head"><div>
+      <h2>התקליטים הנדירים והיקרים בעולם</h2>
+      <p class="lede">דירוג לפי ערך משוער נכון ל-2026. לחצו על תקליט כדי לראות גרף של עליית המחיר לאורך השנים.</p>
+    </div></div>
+    <div class="controls">
+      <input id="qWorld" type="search" placeholder="חיפוש אמן או תקליט…">
+      <select id="decWorld"><option value="">כל העשורים</option></select>
+      <select id="sortWorld"><option value="now">מיון: ערך 2026</option><option value="sold">מיון: מכירה מתועדת</option><option value="year">מיון: שנת הוצאה</option></select>
+    </div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>תקליט</th><th>שנה</th><th>מכירה מתועדת</th><th>ערך 2026 (₪)</th><th>מגמה</th></tr></thead><tbody id="worldBody"></tbody></table></div>
+    <p class="note" id="worldNote"></p>
+  </section>
+
+  <!-- ISRAEL -->
+  <section id="tab-israel" class="panel" hidden>
+    <div class="sec-head"><div>
+      <h2>הנדירים ביותר בארץ</h2>
+      <p class="lede">הוצאות מקוריות של הד ארצי, CBS ישראל, התקליט ועוד. מהתקליטים של 78 סל"ד מימי המנדט ועד הרוק הפסיכדלי של שנות ה-60 וה-70.</p>
+    </div></div>
+    <div class="controls"><input id="qIsrael" type="search" placeholder="חיפוש…"></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>תקליט</th><th>שנה</th><th>טווח מחיר בשוק</th><th>ערך 2026 (₪)</th><th>מגמה</th></tr></thead><tbody id="israelBody"></tbody></table></div>
+    <p class="note">שוק התקליטים הישראלי קטן ואין בו בית מכירות מרכזי שמפרסם תוצאות. המחירים כאן הם הערכות לעותק מקורי במצב VG+ ומעלה, על בסיס מחירי אספנים וחנויות. עותק במצב גרוע שווה הרבה פחות.</p>
+  </section>
+
+  <!-- HISTORY -->
+  <section id="tab-history" class="panel" hidden>
+    <div class="sec-head"><div>
+      <h2>150 שנות תקליט</h2>
+      <p class="lede">מהגליל של אדיסון ועד תחיית הוויניל. בהמשך העמוד: התקליט הנדיר של כל שנה, ואלבום השנה בארץ ובעולם.</p>
+    </div></div>
+    <div class="timeline" id="timeline"></div>
+    <div class="cols">
+      <div>
+        <h3 style="font-size:1.5rem">התקליט הנדיר של כל שנה</h3>
+        <p class="lede" style="font-size:.95rem">התקליט היקר ביותר בארכיון שיצא באותה שנה.</p>
+        <div class="tbl"><table><thead><tr><th>שנה</th><th>תקליט</th><th>ערך (₪)</th></tr></thead><tbody id="rareYearBody"></tbody></table></div>
+      </div>
+      <div>
+        <h3 style="font-size:1.5rem">אלבום השנה</h3>
+        <div class="subtabs" id="bsSwitch"><button data-k="world" aria-pressed="true">בעולם</button><button data-k="israel" aria-pressed="false">בישראל</button></div>
+        <div class="tbl"><table><thead><tr><th>שנה</th><th>אלבום</th></tr></thead><tbody id="bsBody"></tbody></table></div>
+        <p class="note" id="bsNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTRIES -->
+  <section id="tab-countries" class="panel" hidden>
+    <div class="sec-head"><div>
+      <h2>התקליט הנמכר ביותר בכל מדינה</h2>
+      <p class="lede">האלבום הנמכר בכל הזמנים בשוק המקומי של כל מדינה, ומתחת: האלבום הנמכר בעולם בכל שנה.</p>
+    </div></div>
+    <div class="controls"><input id="qCountry" type="search" placeholder="חיפוש מדינה…"></div>
+    <div class="grid" id="countryGrid"></div>
+    <p class="note">הנתונים מבוססים על הסמכות של איגודי התעשייה המקומיים (RIAA, BPI, IFPI ודומיהם) ועל דיווחים מקובלים. ברבים מהשווקים אין ספירה רשמית מלאה, ולכן המספרים הם הערכה. מוצגות רק מדינות שיש להן נתון מקובל.</p>
+    <h3 style="font-size:1.5rem;margin-top:28px">האלבום הנמכר בעולם, שנה אחר שנה</h3>
+    <div class="controls"><select id="decYears"><option value="">כל השנים</option></select></div>
+    <div class="tbl"><table><thead><tr><th>שנה</th><th>אלבום</th><th>מדינת האמן</th></tr></thead><tbody id="yearsBody"></tbody></table></div>
+  </section>
+
+  <!-- GAMES -->
+  <section id="tab-games" class="panel" hidden>
+    <div class="sec-head"><div>
+      <h2>חדר המשחקים</h2>
+      <p class="lede">ארבעה משחקים על בסיס הארכיון: זיכרון, ניחוש מחירים, ניחוש שנים וזיהוי אמנים. השיאים שלכם נשמרים בדפדפן.</p>
+    </div></div>
+    <div class="subtabs" id="gameSwitch">
+      <button data-g="memory" aria-pressed="true">זיכרון תקליטים</button>
+      <button data-g="hilo" aria-pressed="false">יקר או זול?</button>
+      <button data-g="year" aria-pressed="false">באיזו שנה?</button>
+      <button data-g="artist" aria-pressed="false">מי האמן?</button>
+    </div>
+
+    <div id="g-memory" class="game">
+      <div class="gbar">
+        <div class="subtabs" id="memLevel" style="margin:0">
+          <button data-n="6" aria-pressed="false">קל · 6 זוגות</button>
+          <button data-n="10" aria-pressed="true">בינוני · 10 זוגות</button>
+          <button data-n="15" aria-pressed="false">קשה · 15 זוגות</button>
+        </div>
+        <div class="gstats"><span>מהלכים <b class="num" id="memMoves">0</b></span><span>זמן <b class="num" id="memTime">0:00</b></span><span>שיא <b class="num" id="memBest">—</b></span>
+          <button class="btn ghost" id="memNew">משחק חדש</button></div>
+      </div>
+      <div class="mgrid" id="memGrid"></div>
+      <div class="gdone" id="memDone" hidden></div>
+    </div>
+
+    <div id="g-hilo" class="game" hidden>
+      <div class="gbar"><p class="lede" style="margin:0">איזה תקליט שווה יותר היום? רצף של תשובות נכונות מעלה את הניקוד.</p>
+        <div class="gstats"><span>רצף <b class="num" id="hlStreak">0</b></span><span>שיא <b class="num" id="hlBest">0</b></span></div></div>
+      <div class="duel" id="hlDuel"></div>
+      <div class="msg" id="hlMsg"></div>
+    </div>
+
+    <div id="g-year" class="game" hidden>
+      <div class="gbar"><p class="lede" style="margin:0">באיזו שנה יצא התקליט? 10 שאלות בכל סבב.</p>
+        <div class="gstats"><span>שאלה <b class="num" id="yrQ">1/10</b></span><span>נקודות <b class="num" id="yrScore">0</b></span><span>שיא <b class="num" id="yrBest">0</b></span></div></div>
+      <div class="quiz" id="yrQuiz"></div>
+    </div>
+
+    <div id="g-artist" class="game" hidden>
+      <div class="gbar"><p class="lede" style="margin:0">מי הקליט את האלבום? 10 שאלות בכל סבב.</p>
+        <div class="gstats"><span>שאלה <b class="num" id="arQ">1/10</b></span><span>נקודות <b class="num" id="arScore">0</b></span><span>שיא <b class="num" id="arBest">0</b></span></div></div>
+      <div class="quiz" id="arQuiz"></div>
+    </div>
+  </section>
+
+  <!-- STORE -->
+  <section id="tab-store" class="panel" hidden>
+    <div class="sec-head"><div>
+      <h2>חנות התקליטים</h2>
+      <p class="lede">אספנים מוכרים לאספנים. כל חבר רשום יכול להעלות תקליטים למכירה, והקונים יוצרים קשר ישירות עם המוכר.</p>
+    </div></div>
+    <div class="storebar">
+      <div class="controls" style="margin:0;flex:1"><input id="qStore" type="search" placeholder="חיפוש בחנות…">
+        <select id="sortStore"><option value="new">החדשים קודם</option><option value="low">מחיר: מהזול</option><option value="high">מחיר: מהיקר</option></select></div>
+      <button class="btn red" id="sellBtn">+ העלאת תקליט למכירה</button>
+    </div>
+    <div class="msg" id="storeMsg"></div>
+    <div class="items" id="storeItems"></div>
+    <div class="empty" id="storeEmpty"><h3>החנות עוד ריקה</h3><p>כאן יופיעו התקליטים שחברי האתר מעלים למכירה. נרשמים בלשונית "החשבון שלי" ולוחצים על "העלאת תקליט למכירה".</p></div>
+  </section>
+
+  <!-- ACCOUNT -->
+  <section id="tab-account" class="panel" hidden>
+    <div id="acctOut">
+      <div class="sec-head"><div><h2>הצטרפות לתקליTומר</h2><p class="lede">שם משתמש וסיסמה כדי למכור בחנות ולנהל את המודעות שלכם.</p></div></div>
+      <div class="cols">
+        <form class="f" id="regForm"><h3>הרשמה</h3>
+          <label for="regUser">שם משתמש (אותיות באנגלית, ספרות, _ )<input id="regUser" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" dir="ltr" autocomplete="username"></label>
+          <label for="regPass">סיסמה (לפחות 6 תווים)<input id="regPass" type="password" required minlength="6" dir="ltr" autocomplete="new-password"></label>
+          <label for="regContact">איך יוצרים איתכם קשר? (טלפון / אימייל, יוצג לקונים)<input id="regContact" required maxlength="80"></label>
+          <button class="btn red" type="submit">הרשמה</button><div class="msg" id="regMsg"></div></form>
+        <form class="f" id="loginForm"><h3>כניסה</h3>
+          <label for="logUser">שם משתמש<input id="logUser" required dir="ltr" autocomplete="username"></label>
+          <label for="logPass">סיסמה<input id="logPass" type="password" required dir="ltr" autocomplete="current-password"></label>
+          <button class="btn" type="submit">כניסה</button><div class="msg" id="logMsg"></div></form>
+      </div>
+      <p class="note">החשבון מקושר לחשבון Claude שאיתו פתחתם את העמוד. הסיסמה נשמרת מוצפנת (hash) באזור פרטי שרק אתם יכולים לקרוא.</p>
+    </div>
+    <div id="acctIn" hidden>
+      <div class="sec-head"><div><h2 id="helloH">שלום</h2><p class="lede" id="helloP"></p></div><button class="btn ghost" id="logoutBtn">יציאה</button></div>
+      <div class="cols">
+        <form class="f" id="sellForm"><h3>תקליט חדש למכירה</h3>
+          <label for="sTitle">שם התקליט<input id="sTitle" required maxlength="80"></label>
+          <label for="sArtist">אמן<input id="sArtist" required maxlength="60"></label>
+          <div class="row2"><label for="sYear">שנה<input id="sYear" type="number" min="1890" max="2026" required></label>
+            <label for="sCountry">ארץ הוצאה<input id="sCountry" maxlength="30" value="ישראל"></label></div>
+          <div class="row2"><label for="sCond">מצב<select id="sCond"><option>M (חדש באריזה)</option><option>NM</option><option selected>VG+</option><option>VG</option><option>G</option></select></label>
+            <label for="sPrice">מחיר (₪)<input id="sPrice" type="number" min="1" max="10000000" required></label></div>
+          <label for="sDesc">תיאור<textarea id="sDesc" rows="3" maxlength="400"></textarea></label>
+          <button class="btn red" type="submit">פרסום בחנות</button><div class="msg" id="sellMsg"></div></form>
+        <div><h3>המודעות שלי</h3><div class="items" id="myItems" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))"></div>
+          <div class="empty" id="myEmpty" style="padding:20px">עוד לא העליתם תקליטים.</div></div>
+      </div>
+    </div>
+    <div class="empty" id="acctNoDb" hidden>ההרשמה והחנות זמינות רק כשנכנסים לעמוד עם חשבון Claude מחובר.</div>
+  </section>
+</main>
+<div class="wrap"><footer>תקליTומר · מחירים מוצגים בשקלים לפי שער הדולר שבראש העמוד. מכירות מתועדות לקוחות מדיווחים פומביים של בתי מכירות וכלי תקשורת; ערכי 2026 ושנים ללא מכירה הם הערכה.</footer></div>
+
+<div class="modal" id="modal" hidden><div class="panel" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <button class="close" id="mClose" aria-label="סגירה">✕</button>
+  <div class="tag" id="mSub"></div><h2 id="mTitle" style="font-size:1.8rem"></h2>
+  <p id="mWhy" style="color:var(--muted);max-width:65ch"></p>
+  <div class="kv" id="mKv"></div>
+  <svg class="chart" id="mChart" viewBox="0 0 760 300" role="img" aria-label="גרף מחיר לאורך השנים"></svg>
+  <p class="note">הנקודות המודגשות הן מכירות או הערכות מתועדות. הקו בין הנקודות הוא אינטרפולציה, ומעבר להן הערכה לפי מגמת השוק.</p>
+</div></div>
+</div>
+
+<script>
+/* ===================== DATA ===================== */
+// [id, title, artist, year, country, format, why, anchors [[year, value, note]], currency]
+const WORLD = [
+ ["w1","Once Upon a Time in Shaolin","Wu-Tang Clan",2015,"ארה\"ב","2CD בעותק יחיד","האלבום היחיד שהודפס בעותק אחד בלבד. נמכר ב-2015 למרטין שקרלי ב-2 מיליון דולר, וב-2021 לקולקטיב PleasrDAO.",[[2015,2000000,"מכירה ראשונה"],[2021,4000000,"PleasrDAO"]]],
+ ["w2","Blowin' in the Wind (Ionic Original)","Bob Dylan",2021,"ארה\"ב","דיסק Ionic יחיד","הקלטה חדשה של השיר על דיסק אלומיניום-לכה בעותק יחיד, בהפקת טי-בון ברנט. נמכר בכריסטיס לונדון.",[[2022,1770000,"כריסטיס"]]],
+ ["w3","The Beatles (White Album) No. 0000001","The Beatles",1968,"בריטניה","LP כפול, עותק מספר 1","העותק הממוספר הראשון, שהיה שייך לרינגו סטאר. שיא עולמי למכירת תקליט ויניל מסחרי.",[[2015,790000,"ג'וליין'ס"]]],
+ ["w4","Double Fantasy (חתום עבור צ'פמן)","John Lennon & Yoko Ono",1980,"ארה\"ב","LP חתום","העותק שלנון חתם למארק צ'פמן שעות לפני שנרצח. מוצג חשוב במשפט.",[[2003,525000,"מכירה פרטית מדווחת"]]],
+ ["w5","My Happiness (אצטט)","Elvis Presley",1953,"ארה\"ב","אצטט 10\" יחיד","ההקלטה הראשונה של אלביס, ששילם עליה 4 דולר באולפני Sun. ג'ק וייט קנה אותה.",[[2015,300000,"גרנזיי'ס"]]],
+ ["w6","Sgt. Pepper's (חתום ע\"י ארבעת החברים)","The Beatles",1967,"בריטניה","LP חתום","אחד העותקים הבודדים של סרג'נט פפר שחתומים על ידי כל ארבעת הביטלס.",[[2013,290500,"Heritage"]]],
+ ["w7","That'll Be the Day / In Spite of All the Danger","The Quarrymen",1958,"בריטניה","אצטט 78 יחיד","ההקלטה הראשונה של לנון, מקרטני והריסון, לפני שנקראו ביטלס. בבעלות פול מקרטני.",[[2004,250000,"הערכת שווי"]]],
+ ["w8","Yesterday and Today ('עטיפת הקצב', סטריאו, אטום)","The Beatles",1966,"ארה\"ב","LP, עטיפה מקורית","העטיפה עם הבובות המבותרות נגנזה לפני יציאתה. עותק סטריאו אטום במצב ראשון הוא הגביע הקדוש.",[[2016,125000,"Heritage"]]],
+ ["w9","אצטט אודישן דקה","The Beatles",1962,"בריטניה","אצטט 78","הקלטה מהאודישן הכושל בדקה, ינואר 1962.",[[2016,100000,"מכירה פומבית"]]],
+ ["w10","Caustic Window (Test Pressing)","Aphex Twin",1994,"בריטניה","טסט פרסינג","האלבום הגנוז נמכר בקיקסטרטר ונקנה על ידי נוץ', יוצר מיינקראפט.",[[2014,46300,"eBay"]]],
+ ["w11","Do I Love You (Indeed I Do)","Frank Wilson",1965,"ארה\"ב","סינגל 7\"","התקליט הנדיר בעולם הנורת'רן סול. רק שני עותקים ידועים מההדפסה הראשונה.",[[2009,39300,"£25,742"]]],
+ ["w12","Alcohol and Jake Blues","Tommy Johnson",1930,"ארה\"ב","78 סל\"ד, Paramount","עותק אחד ידוע בלבד של הקלטת הבלוז מ-Paramount.",[[2013,37100,"eBay"]]],
+ ["w13","The Freewheelin' Bob Dylan (שירים גנוזים, סטריאו)","Bob Dylan",1963,"ארה\"ב","LP","הדפסה מוקדמת שכללה ארבעה שירים שהוחלפו. פחות מ-10 עותקי סטריאו ידועים.",[[2010,35000,"מכירה מדווחת"]]],
+ ["w14","Scepter Studios Acetate","The Velvet Underground",1966,"ארה\"ב","אצטט","גרסה מוקדמת של אלבום הבננה, נמצאה בשוק פשפשים בניו יורק ב-75 סנט.",[[2006,25200,"eBay"]]],
+ ["w15","Stormy Weather","The Five Sharps",1952,"ארה\"ב","78 סל\"ד, Jubilee","תקליט הדו-וופ הנדיר ביותר. עותקים ספורים בלבד שרדו.",[[2010,25000,"מכירה מדווחת"]]],
+ ["w16","God Save the Queen (A&M)","Sex Pistols",1977,"בריטניה","סינגל 7\"","A&M ביטלה את החוזה עם הלהקה אחרי שישה ימים והשמידה כמעט את כל ההדפסה.",[[2006,17000,"מכירה מדווחת"]]],
+ ["w17","Street Fighting Man (עטיפת תמונה)","The Rolling Stones",1968,"ארה\"ב","סינגל 7\"","עטיפת המהומות נמשכה מהשוק מיד אחרי יציאתה.",[[2012,17000,"מכירה מדווחת"]]],
+ ["w18","The Black Album (פרומו)","Prince",1987,"ארה\"ב","LP","פרינס ביטל את האלבום שבוע לפני היציאה. רוב העותקים הושמדו.",[[2018,15000,"Discogs"]]],
+ ["w19","Introducing… The Beatles (Vee-Jay, סטריאו)","The Beatles",1964,"ארה\"ב","LP","הגרסה עם Love Me Do ו-P.S. I Love You, בסטריאו.",[[2014,15000,"מכירה מדווחת"]]],
+ ["w20","Hank Mobley (BLP 1568)","Hank Mobley",1957,"ארה\"ב","LP, Blue Note","הנדיר מבין תקליטי בלו נוט. הודפסו מעט מאוד עותקים.",[[2015,12000,"מכירה מדווחת"]]],
+ ["w21","Hard Time Killin' Floor Blues","Skip James",1931,"ארה\"ב","78 סל\"ד, Paramount","הקלטה מכוננת של בלוז הדלתא, מעט עותקים ידועים.",[[2010,10000,"הערכת סוחרים"]]],
+ ["w22","Please Please Me (תווית זהב, סטריאו)","The Beatles",1963,"בריטניה","LP","ההדפסה הראשונה בסטריאו עם תווית שחור-זהב של Parlophone.",[[2012,9000,"מכירה מדווחת"]]],
+ ["w23","My Bonnie","Tony Sheridan & The Beat Brothers",1961,"גרמניה","סינגל 7\", Polydor","ההקלטה המסחרית הראשונה של הביטלס, כלהקת ליווי בהמבורג.",[[2012,8000,"מכירה מדווחת"]]],
+ ["w24","Led Zeppelin (אותיות טורקיז)","Led Zeppelin",1969,"בריטניה","LP","ההדפסה הבריטית הראשונה, עם שם הלהקה בטורקיז במקום כתום.",[[2015,7500,"מכירה מדווחת"]]],
+ ["w25","Bohemian Rhapsody (ויניל כחול)","Queen",1978,"בריטניה","סינגל 7\"","200 עותקים בלבד חולקו במסיבת EMI לרגל פרס התעשייה.",[[2017,6500,"מכירה מדווחת"]]],
+ ["w26","Me and the Devil Blues","Robert Johnson",1938,"ארה\"ב","78 סל\"ד, Vocalion","אחת מהקלטותיו המעטות של מלך הבלוז.",[[2010,6000,"הערכת סוחרים"]]],
+ ["w27","Pony Blues","Charley Patton",1929,"ארה\"ב","78 סל\"ד, Paramount","אבי הבלוז של הדלתא, הדפסה מקורית.",[[2010,5000,"הערכת סוחרים"]]],
+ ["w28","That's All Right (Sun 209)","Elvis Presley",1954,"ארה\"ב","78 סל\"ד","הסינגל המסחרי הראשון של אלביס.",[[2015,5000,"מכירה מדווחת"]]],
+ ["w29","Cool Struttin' (BLP 1588)","Sonny Clark",1958,"ארה\"ב","LP, Blue Note","מבוקש מאוד ביפן ובאירופה בהדפסה ראשונה במונו.",[[2018,5000,"מכירה מדווחת"]]],
+ ["w30","Diamond Dogs (עטיפה לא מצונזרת)","David Bowie",1974,"בריטניה","LP","העטיפה המקורית תוקנה לפני ההפצה, מעט עותקים יצאו.",[[2016,4500,"מכירה מדווחת"]]],
+ ["w31","Blue Train (BLP 1577)","John Coltrane",1957,"ארה\"ב","LP, Blue Note","הדפסה ראשונה במונו עם כתובת West 63rd.",[[2018,4000,"מכירה מדווחת"]]],
+ ["w32","Love Buzz (Sub Pop SP23)","Nirvana",1988,"ארה\"ב","סינגל 7\"","הסינגל הראשון של נירוונה, 1,000 עותקים ממוספרים ביד.",[[2018,3000,"Discogs"]]],
+ ["w33","Black Sabbath (Vertigo Swirl)","Black Sabbath",1970,"בריטניה","LP","הדפסה בריטית ראשונה עם תווית הספירלה.",[[2018,3000,"Discogs"]]],
+ ["w34","Yesterday and Today (עטיפת הדבקה)","The Beatles",1966,"ארה\"ב","LP","עטיפת הקצב שהודבקה עליה עטיפה חדשה.",[[2015,3000,"מכירה מדווחת"]]],
+ ["w35","Bleach (ויניל לבן)","Nirvana",1989,"ארה\"ב","LP","1,000 עותקים ראשונים בוויניל לבן.",[[2018,2500,"Discogs"]]],
+ ["w36","An Ideal for Living","Joy Division",1978,"בריטניה","EP 7\"","ההוצאה העצמית הראשונה של הלהקה.",[[2018,2000,"Discogs"]]],
+ ["w37","Apples and Oranges (עטיפת תמונה)","Pink Floyd",1967,"בריטניה","סינגל 7\"","הסינגל האחרון עם סיד בארט, בעטיפה המקורית.",[[2016,2000,"מכירה מדווחת"]]],
+ ["w38","Three EP","U2",1979,"אירלנד","EP 7\"","1,000 עותקים ממוספרים, הוצאה אירית בלבד.",[[2017,1500,"Discogs"]]],
+ ["w39","Five Leaves Left (הדפסה ראשונה)","Nick Drake",1969,"בריטניה","LP, Island","תווית Island ורודה עם שוליים.",[[2018,1500,"Discogs"]]],
+ ["w40","Elvis Presley (LPM-1254)","Elvis Presley",1956,"ארה\"ב","LP","האלבום הראשון, הדפסה ראשונה.",[[2016,1500,"מכירה מדווחת"]]],
+ ["w41","Electric Ladyland (עטיפה בריטית ראשונה)","The Jimi Hendrix Experience",1968,"בריטניה","LP כפול, Track","העטיפה השנויה במחלוקת של ההדפסה הבריטית.",[[2016,1200,"מכירה מדווחת"]]],
+];
+// Israeli: values in ILS (estimates, VG+ copies)
+const ISRAEL = [
+ ["i1","Junkies, Monkeys & Donkeys","Jericho Jones",1971,"ישראל","LP","להקת הרוק הישראלית שהקליטה בלונדון. ההדפסה המקורית היא הגביע של אספני הפסיכדליה הישראלית.",[[2010,2500],[2018,4200],[2024,5500]]],
+ ["i2","The Churchills","The Churchills (הצ'רצ'ילים)",1968,"ישראל","LP, הד ארצי","אלבום הרוק הפסיכדלי הראשון בישראל. מבוקש מאוד גם באירופה.",[[2010,2000],[2018,3500],[2024,4500]]],
+ ["i3","תקליטי 78 סל\"ד מוקדמים","ברכה צפירה",1935,"א\"י המנדטורית","78 סל\"ד","הקלטות מימי המנדט, מהראשונות של הזמר העברי. מעט מאוד שרדו שלמים.",[[2010,1200],[2020,2200],[2024,2800]]],
+ ["i4","אלינור (הדפסה מקורית)","זוהר ארגוב",1980,"ישראל","LP","הקלטות מוקדמות של מלך הזמר המזרחי, בהוצאה מקורית.",[[2012,800],[2020,1600],[2024,2100]]],
+ ["i5","פוזי","אריק איינשטיין והצ'רצ'ילים",1969,"ישראל","LP, הד ארצי","מאבני היסוד של הרוק העברי.",[[2010,700],[2018,1300],[2024,1800]]],
+ ["i6","תקליטי 78 סל\"ד","שושנה דמארי",1948,"ישראל","78 סל\"ד","הקלטות משנות הקום המדינה.",[[2010,700],[2020,1200],[2024,1500]]],
+ ["i7","החלונות הגבוהים","החלונות הגבוהים",1967,"ישראל","LP, CBS","שולה חן, אריק איינשטיין ושמוליק קראוס. אלבום יחיד.",[[2010,600],[2018,1100],[2024,1500]]],
+ ["i8","סוף עונת התפוזים","תמוז",1976,"ישראל","LP","אלבום הרוק המכונן של שלום חנוך ואריאל זילבר.",[[2010,500],[2018,950],[2024,1250]]],
+ ["i9","שבלול","אריק איינשטיין ושלום חנוך",1970,"ישראל","LP","הדפסה ראשונה עם העטיפה המקורית.",[[2010,450],[2018,900],[2024,1200]]],
+ ["i10","שלום חנוך (אלבום בכורה)","שלום חנוך",1971,"ישראל","LP","אלבום הסולו הראשון.",[[2010,350],[2018,700],[2024,900]]],
+ ["i11","סיפורי פוגי","כוורת",1973,"ישראל","LP","הדפסה ראשונה.",[[2010,350],[2018,650],[2024,900]]],
+ ["i12","הדודאים (10 אינץ')","הדודאים",1958,"ישראל","10\" LP","התקליטים המוקדמים של בני אמדורסקי וישראל גוריון.",[[2010,400],[2018,650],[2024,800]]],
+ ["i13","שירי תימן (הדפסה ישראלית ראשונה)","עפרה חזה",1984,"ישראל","LP","האלבום שהפך ללהיט עולמי, בהדפסה הישראלית המקורית.",[[2010,300],[2018,550],[2024,750]]],
+ ["i14","ירושלים של זהב (סינגל מקורי)","שולי נתן",1967,"ישראל","סינגל 7\"","הסינגל המקורי מערב מלחמת ששת הימים.",[[2010,300],[2018,500],[2024,700]]],
+ ["i15","מתי כספי","מתי כספי",1974,"ישראל","LP","הדפסה ראשונה.",[[2010,250],[2018,450],[2024,600]]],
+ ["i16","משינה (אלבום בכורה)","משינה",1985,"ישראל","LP","הדפסה ראשונה.",[[2010,200],[2018,400],[2024,600]]],
+ ["i17","חום יולי אוגוסט (הדפסה ראשונה)","שלמה ארצי",1988,"ישראל","LP","מהאלבומים הנמכרים ביותר בתולדות ישראל, בוויניל המקורי.",[[2010,150],[2018,300],[2024,450]]],
+];
+const TIMELINE = [
+ ["1877","הפונוגרף של אדיסון","תומס אדיסון מקליט \"Mary Had a Little Lamb\" על גליל עטוף בנייר כסף. ההקלטה הראשונה שאפשר היה להשמיע מחדש."],
+ ["1887","הגרמופון והדיסק השטוח","אמיל ברלינר רושם פטנט על דיסק שטוח. קל לשכפל אותו בכמויות, ולכן הוא מנצח את הגליל."],
+ ["1910–1940","עידן ה-78 סל\"ד","תקליטי שלאק שבירים, כ-3 דקות לצד. הבלוז, הג'אז והזמר העברי הראשון מוקלטים בפורמט הזה."],
+ ["1947","הד ארצי נוסדת","חברת התקליטים הישראלית הראשונה, שתקליט את רוב הזמר העברי בעשורים הבאים."],
+ ["1948","ה-LP של קולומביה","תקליט ויניל 33⅓ סל\"ד, 12 אינץ', כ-22 דקות לצד. נולד ה\"אלבום\"."],
+ ["1949","סינגל ה-45","RCA משיקה את ה-7 אינץ'. הפורמט של הרוקנרול, הג'וקבוקס והמצעדים."],
+ ["1958","סטריאו","תקליטי סטריאו מגיעים לשוק. לכן הדפסות מונו מוקדמות של שנות ה-60 נדירות היום."],
+ ["1967–1975","שיא האלבום","סרג'נט פפר, החלונות הגבוהים, הצ'רצ'ילים, תמוז. האלבום הופך ליצירה שלמה, והרוק העברי נולד."],
+ ["1982","הדיסק","ה-CD יוצא, ובתוך עשור התקליט כמעט נעלם מהחנויות. מפעלי ההדפסה נסגרים."],
+ ["2008","יום חנויות התקליטים","Record Store Day מתחיל בארה\"ב, ותחיית הוויניל יוצאת לדרך."],
+ ["2020","הוויניל עוקף את ה-CD","לראשונה מאז שנות ה-80, תקליטים מכניסים בארה\"ב יותר כסף מדיסקים."],
+ ["2026","היום","הדפסות מקוריות נדירות מגיעות לשיאי מחיר, ואספנים בכל העולם מתחרים על אותם עותקים מעטים."],
+];
+// Best-selling album worldwide in each year (IFPI from 2000; earlier years: the year's top seller by global reputation)
+const BS_WORLD = [
+ [1956,"Elvis Presley","Elvis Presley","ארה\"ב"],[1957,"Elvis' Christmas Album","Elvis Presley","ארה\"ב"],[1958,"South Pacific (פסקול)","שונים","ארה\"ב"],[1959,"Kind of Blue","Miles Davis","ארה\"ב"],
+ [1960,"G.I. Blues","Elvis Presley","ארה\"ב"],[1961,"West Side Story (פסקול)","שונים","ארה\"ב"],[1962,"Modern Sounds in Country and Western Music","Ray Charles","ארה\"ב"],[1963,"With the Beatles","The Beatles","בריטניה"],
+ [1964,"A Hard Day's Night","The Beatles","בריטניה"],[1965,"The Sound of Music (פסקול)","שונים","ארה\"ב"],[1966,"Revolver","The Beatles","בריטניה"],[1967,"Sgt. Pepper's Lonely Hearts Club Band","The Beatles","בריטניה"],
+ [1968,"The Beatles (White Album)","The Beatles","בריטניה"],[1969,"Abbey Road","The Beatles","בריטניה"],[1970,"Bridge over Troubled Water","Simon & Garfunkel","ארה\"ב"],[1971,"Led Zeppelin IV","Led Zeppelin","בריטניה"],
+ [1972,"Harvest","Neil Young","קנדה"],[1973,"The Dark Side of the Moon","Pink Floyd","בריטניה"],[1974,"Elton John's Greatest Hits","Elton John","בריטניה"],[1975,"Wish You Were Here","Pink Floyd","בריטניה"],
+ [1976,"Their Greatest Hits (1971–1975)","Eagles","ארה\"ב"],[1977,"Rumours","Fleetwood Mac","בריטניה/ארה\"ב"],[1978,"Grease (פסקול)","שונים","ארה\"ב"],[1979,"The Wall","Pink Floyd","בריטניה"],
+ [1980,"Back in Black","AC/DC","אוסטרליה"],[1981,"Tattoo You","The Rolling Stones","בריטניה"],[1982,"Thriller","Michael Jackson","ארה\"ב"],[1983,"Can't Slow Down","Lionel Richie","ארה\"ב"],
+ [1984,"Born in the U.S.A.","Bruce Springsteen","ארה\"ב"],[1985,"Brothers in Arms","Dire Straits","בריטניה"],[1986,"Slippery When Wet","Bon Jovi","ארה\"ב"],[1987,"Appetite for Destruction","Guns N' Roses","ארה\"ב"],
+ [1988,"Tracy Chapman","Tracy Chapman","ארה\"ב"],[1989,"...But Seriously","Phil Collins","בריטניה"],[1990,"The Immaculate Collection","Madonna","ארה\"ב"],[1991,"Dangerous","Michael Jackson","ארה\"ב"],
+ [1992,"The Bodyguard (פסקול)","Whitney Houston","ארה\"ב"],[1993,"Music Box","Mariah Carey","ארה\"ב"],[1994,"Cracked Rear View","Hootie & the Blowfish","ארה\"ב"],[1995,"Jagged Little Pill","Alanis Morissette","קנדה"],
+ [1996,"Falling into You","Céline Dion","קנדה"],[1997,"Come On Over","Shania Twain","קנדה"],[1998,"Titanic (פסקול)","James Horner","ארה\"ב"],[1999,"Supernatural","Santana","ארה\"ב"],
+ [2000,"1","The Beatles","בריטניה"],[2001,"No Angel","Dido","בריטניה"],[2002,"The Eminem Show","Eminem","ארה\"ב"],[2003,"Come Away with Me","Norah Jones","ארה\"ב"],
+ [2004,"Confessions","Usher","ארה\"ב"],[2005,"X&Y","Coldplay","בריטניה"],[2006,"Back to Bedlam","James Blunt","בריטניה"],[2007,"Back to Black","Amy Winehouse","בריטניה"],
+ [2008,"Viva la Vida","Coldplay","בריטניה"],[2009,"I Dreamed a Dream","Susan Boyle","בריטניה"],[2010,"Recovery","Eminem","ארה\"ב"],[2011,"21","Adele","בריטניה"],
+ [2012,"21","Adele","בריטניה"],[2013,"Midnight Memories","One Direction","בריטניה"],[2014,"Frozen (פסקול)","שונים","ארה\"ב"],[2015,"25","Adele","בריטניה"],
+ [2016,"25","Adele","בריטניה"],[2017,"÷ (Divide)","Ed Sheeran","בריטניה"],[2018,"The Greatest Showman (פסקול)","שונים","ארה\"ב"],[2019,"5×20 All the Best!!","Arashi","יפן"],
+ [2020,"Map of the Soul: 7","BTS","דרום קוריאה"],[2021,"30","Adele","בריטניה"],[2022,"Midnights","Taylor Swift","ארה\"ב"],[2023,"FML","Seventeen","דרום קוריאה"],
+ [2024,"The Tortured Poets Department","Taylor Swift","ארה\"ב"],[2025,"The Life of a Showgirl (הערכה)","Taylor Swift","ארה\"ב"],
+];
+// Israel: landmark / best-selling album of the year by reputation (no complete official sales charts exist)
+const BS_ISRAEL = [
+ [1958,"הדודאים","הדודאים"],[1967,"ירושלים של זהב","שולי נתן ושונים"],[1967,"החלונות הגבוהים","החלונות הגבוהים"],[1968,"The Churchills","הצ'רצ'ילים"],[1969,"פוזי","אריק איינשטיין והצ'רצ'ילים"],
+ [1970,"שבלול","אריק איינשטיין ושלום חנוך"],[1971,"שלום חנוך","שלום חנוך"],[1973,"סיפורי פוגי","כוורת"],[1974,"פוגי בפיתה","כוורת"],[1976,"סוף עונת התפוזים","תמוז"],
+ [1978,"אבניבי (אירוויזיון)","יזהר כהן ולהקת אלפא-ביתא"],[1979,"הללויה (אירוויזיון)","חלב ודבש"],[1982,"הפרח בגני","זוהר ארגוב"],[1984,"שירי תימן","עפרה חזה"],
+ [1985,"משינה","משינה"],[1987,"באה מאהבה","יהודית רביץ"],[1988,"חום יולי אוגוסט","שלמה ארצי"],[1995,"שניים","שלמה ארצי"],
+ [2002,"הפרויקט של עידן רייכל","הפרויקט של עידן רייכל"],[2003,"חומר מקומי","הדג נחש"],[2005,"ממעמקים","הפרויקט של עידן רייכל"],[2018,"Toy (סינגל, אירוויזיון)","נטע ברזילי"],
+];
+const COUNTRIES = [
+ ["ארה\"ב","Their Greatest Hits (1971–1975)","Eagles",1976,"38× פלטינה (RIAA)"],
+ ["בריטניה","Greatest Hits","Queen",1981,"מעל 7 מיליון"],
+ ["ישראל","חום יולי אוגוסט","שלמה ארצי",1988,"מוערך כאלבום הנמכר בתולדות ישראל"],
+ ["קנדה","Come On Over","Shania Twain",1997,"יהלום ×2"],
+ ["יפן","First Love","Hikaru Utada",1999,"כ-7.6 מיליון"],
+ ["מקסיקו","Romance","Luis Miguel",1991,"האלבום הנמכר במקסיקו"],
+ ["ספרד","Más","Alejandro Sanz",1997,"מעל 2 מיליון"],
+ ["צרפת","D'eux","Céline Dion",1995,"כ-4.4 מיליון"],
+ ["גרמניה","Mensch","Herbert Grönemeyer",2002,"מעל 3 מיליון"],
+ ["ברזיל","Músicas para Louvar ao Senhor","Padre Marcelo Rossi",1998,"מעל 3 מיליון"],
+ ["שוודיה","ABBA Gold","ABBA",1992,"האלבום הנמכר בשוודיה"],
+ ["אוסטרליה","Bat Out of Hell","Meat Loaf",1977,"25× פלטינה (ARIA)"],
+ ["הודו","Aashiqui (פסקול)","Nadeem–Shravan",1990,"כ-20 מיליון"],
+ ["טורקיה","Ölürüm Sana","Tarkan",1997,"מעל 4 מיליון"],
+ ["מצרים","Nour El Ein","עמרו דיאב",1996,"להיט ענק בעולם הערבי"],
+ ["קולומביה","Pies Descalzos","Shakira",1995,"האלבום שפרץ לשאקירה"],
+ ["דרום קוריאה","FML","Seventeen",2023,"מעל 6 מיליון (Circle)"],
+ ["הפיליפינים","Christmas in Our Hearts","Jose Mari Chan",1990,"האלבום הנמכר בפיליפינים"],
+ ["ג'מייקה","Legend","Bob Marley & The Wailers",1984,"אלבום הרגאיי הנמכר בכל הזמנים"],
+ ["קובה","Buena Vista Social Club","Buena Vista Social Club",1997,"מעל 8 מיליון בעולם"],
+ ["אירלנד","The Joshua Tree","U2",1987,"מעל 25 מיליון בעולם"],
+ ["אוסטרליה (אמן מקומי)","Whispering Jack","John Farnham",1986,"24× פלטינה"],
+];
+
+/* ===================== HELPERS ===================== */
+let RATE = 3.65;
+try{ const r=parseFloat(localStorage.getItem("tk_rate")); if(r>1) RATE=r; }catch(e){}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtILS=v=>"₪"+Math.round(v).toLocaleString("en-US");
+const fmtUSD=v=>"$"+Math.round(v).toLocaleString("en-US");
+const NOW=2026;
+const LABEL_COLORS=["#a8321f","#b5862a","#2f5d7c","#3f6b3a","#6b2f5d","#c25a1c","#1f4f4a","#8a1c2b"];
+const hash=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return Math.abs(h)};
+const labColor=s=>LABEL_COLORS[hash(s)%LABEL_COLORS.length];
+
+function mk(arr,cur){return arr.map(([id,t,a,y,c,fmt,why,pts])=>({id,t,a,y,c,fmt,why,pts,cur}))}
+const W=mk(WORLD,"USD"), IL=mk(ISRAEL,"ILS");
+
+// yearly value series in ILS (anchor points are documented; between = log interpolation; outside = trend)
+function series(r){
+  const k=r.cur==="USD"?RATE:1;
+  const pts=r.pts.map(p=>[p[0],p[1]*k]).sort((a,b)=>a[0]-b[0]);
+  const start=Math.max(r.y,1985), out=[];
+  for(let yr=start;yr<=NOW;yr++){
+    let v;
+    if(yr<=pts[0][0]) v=pts[0][1]/Math.pow(1.075,pts[0][0]-yr);
+    else if(yr>=pts[pts.length-1][0]) v=pts[pts.length-1][1]*Math.pow(1.045,yr-pts[pts.length-1][0]);
+    else{ let i=0; while(pts[i+1][0]<yr)i++; const [y0,v0]=pts[i],[y1,v1]=pts[i+1];
+      v=Math.exp(Math.log(v0)+(Math.log(v1)-Math.log(v0))*(yr-y0)/(y1-y0)); }
+    out.push([yr,v]);
+  }
+  return {out,pts};
+}
+const nowVal=r=>{const s=series(r).out;return s[s.length-1][1]};
+const lastSold=r=>r.pts[r.pts.length-1];
+
+function sparkSVG(r){
+  const s=series(r).out, vs=s.map(p=>p[1]), mn=Math.min(...vs), mx=Math.max(...vs);
+  const pts=s.map((p,i)=>[i/(s.length-1)*106+2, 28-((p[1]-mn)/(mx-mn||1))*24]);
+  const d=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join("");
+  const e=pts[pts.length-1];
+  return `<svg class="spark" viewBox="0 0 110 30" aria-hidden="true"><path d="${d} L108,30 L2,30Z" fill="var(--brass)" opacity=".18"/><path d="${d}" fill="none" stroke="var(--red)" stroke-width="1.6"/><circle cx="${e[0]}" cy="${e[1]}" r="2.6" fill="var(--red)"/></svg>`;
+}
+
+/* ===================== RENDER: tables ===================== */
+function rowHTML(r,i,isIL){
+  const ls=lastSold(r);
+  const soldCell=isIL
+    ? `<span class="num">${fmtILS(r.pts[0][1])}–${fmtILS(ls[1])}</span> <span class="chip est">הערכה</span>`
+    : `<span class="num">${fmtUSD(ls[1])}</span> <span class="t2">(${ls[0]})</span><br><span class="num t2">${fmtILS(ls[1]*RATE)}</span>`;
+  return `<tr class="rec" tabindex="0" data-id="${r.id}"><td class="rank">${i+1}</td>
+   <td><div class="rcell"><span class="lab" aria-hidden="true"><i style="background:${labColor(r.a)}"></i></span><div><div class="t1">${esc(r.t)}</div><div class="t2">${esc(r.a)} · ${esc(r.fmt)}</div></div></div></td>
+   <td class="num">${r.y}</td><td>${soldCell}</td><td class="price">${fmtILS(nowVal(r))}</td><td>${sparkSVG(r)}</td></tr>`;
+}
+function renderWorld(){
+  const q=$("#qWorld").value.trim().toLowerCase(), dec=$("#decWorld").value, srt=$("#sortWorld").value;
+  let list=W.filter(r=>(!q||(r.t+" "+r.a).toLowerCase().includes(q))&&(!dec||Math.floor(r.y/10)*10==dec));
+  const key={now:r=>-nowVal(r),sold:r=>-lastSold(r)[1],year:r=>r.y}[srt];
+  list.sort((a,b)=>key(a)-key(b));
+  $("#worldBody").innerHTML=list.map((r,i)=>rowHTML(r,i,false)).join("")||`<tr><td colspan="6" class="t2">לא נמצאו תקליטים.</td></tr>`;
+  $("#worldNote").textContent=`מוצגים ${list.length} תקליטים עם מכירה או הערכה מתועדת. שאפנו ל-1,000, אבל הכנסנו רק תקליטים שיש להם מחיר מתועד ממקור פומבי, כדי שהמחירים יהיו אמינים. "מכירה מתועדת" היא מחיר המכירה הידוע האחרון בדולרים, מומר לשקלים לפי שער של ${RATE}. "ערך 2026" ממשיך את מגמת השוק משנת המכירה.`;
+}
+function renderIsrael(){
+  const q=$("#qIsrael").value.trim().toLowerCase();
+  const list=IL.filter(r=>!q||(r.t+" "+r.a).toLowerCase().includes(q)).sort((a,b)=>nowVal(b)-nowVal(a));
+  $("#israelBody").innerHTML=list.map((r,i)=>rowHTML(r,i,true)).join("");
+}
+
+/* ===================== MODAL CHART ===================== */
+function niceTicks(max){
+  const raw=max/4, mag=Math.pow(10,Math.floor(Math.log10(raw))), n=raw/mag;
+  const step=(n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*mag, t=[];
+  for(let v=0;v<=max+step*0.001;v+=step)t.push(v); if(t[t.length-1]<max)t.push(t[t.length-1]+step); return t;
+}
+const short=v=>v>=1e6?(v/1e6).toFixed(v>=1e7?0:1)+"M":v>=1e3?(v/1e3).toFixed(v>=1e4?0:1)+"K":Math.round(v)+"";
+function openRec(id){
+  const r=[...W,...IL].find(x=>x.id===id); if(!r)return;
+  const {out,pts}=series(r);
+  $("#mSub").textContent=`${r.a} · ${r.y} · ${r.c} · ${r.fmt}`;
+  $("#mTitle").textContent=r.t; $("#mWhy").textContent=r.why;
+  const ls=lastSold(r), first=out[0];
+  const growth=(nowVal(r)/first[1]-1)*100;
+  $("#mKv").innerHTML=(r.cur==="USD"
+    ?`<div><span>מכירה מתועדת אחרונה</span><b>${fmtILS(ls[1]*RATE)}</b><div class="t2 num">${fmtUSD(ls[1])} · ${ls[0]}${ls[2]?" · "+esc(ls[2]):""}</div></div>`
+    :`<div><span>הערכה אחרונה (${ls[0]})</span><b>${fmtILS(ls[1])}</b></div>`)
+    +`<div><span>ערך משוער 2026</span><b>${fmtILS(nowVal(r))}</b></div>`
+    +`<div><span>שינוי מאז ${first[0]}</span><b>+${Math.round(growth).toLocaleString("en-US")}%</b></div>`;
+  // chart
+  const Wd=760,H=300,L=64,R=16,T=16,B=34, iw=Wd-L-R, ih=H-T-B;
+  const maxV=Math.max(...out.map(p=>p[1]),...pts.map(p=>p[1])), ticks=niceTicks(maxV), top=ticks[ticks.length-1];
+  const x0=out[0][0], x1=out[out.length-1][0];
+  const X=y=>L+(y-x0)/(x1-x0||1)*iw, Y=v=>T+ih-v/top*ih;
+  let s="";
+  ticks.forEach(t=>{s+=`<line x1="${L}" x2="${Wd-R}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)" stroke-width="1"/><text x="${L-8}" y="${Y(t)+4}" text-anchor="end">₪${short(t)}</text>`});
+  const span=x1-x0, stepY=span>30?10:span>12?5:span>5?2:1;
+  for(let y=Math.ceil(x0/stepY)*stepY;y<=x1;y+=stepY) s+=`<text x="${X(y)}" y="${H-10}" text-anchor="middle">${y}</text>`;
+  const d=out.map((p,i)=>(i?"L":"M")+X(p[0]).toFixed(1)+","+Y(p[1]).toFixed(1)).join("");
+  s+=`<path d="${d}L${X(x1)},${Y(0)}L${X(x0)},${Y(0)}Z" fill="var(--brass)" opacity=".2"/>`;
+  s+=`<path d="${d}" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  pts.forEach(p=>{const v=p[1]*(r.cur==="USD"?RATE:1);
+    s+=`<circle cx="${X(p[0])}" cy="${Y(v)}" r="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"><title>${p[0]}: ${fmtILS(v)}</title></circle>`;
+    const tx=Math.min(Math.max(X(p[0]),L+40),Wd-R-40);
+    s+=`<text x="${tx}" y="${Math.max(Y(v)-12,12)}" text-anchor="middle" style="fill:var(--ink);font-weight:700">${fmtILS(v)}</text>`});
+  const e=out[out.length-1];
+  s+=`<circle cx="${X(e[0])}" cy="${Y(e[1])}" r="4.5" fill="var(--red)"/>`;
+  $("#mChart").innerHTML=s;
+  $("#modal").hidden=false; $("#mClose").focus();
+}
+function closeModal(){$("#modal").hidden=true}
+$("#mClose").onclick=closeModal;
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+document.addEventListener("click",e=>{const tr=e.target.closest("tr.rec"); if(tr)openRec(tr.dataset.id)});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"){const tr=e.target.closest&&e.target.closest("tr.rec"); if(tr)openRec(tr.dataset.id)}});
+
+/* ===================== HISTORY / COUNTRIES ===================== */
+function renderHistory(){
+  $("#timeline").innerHTML=TIMELINE.map(([y,h,p])=>`<div class="era"><div class="yr">${y}</div><div><h3>${esc(h)}</h3><p>${esc(p)}</p></div></div>`).join("");
+  const byYear={};
+  [...W,...IL].forEach(r=>{if(!byYear[r.y]||nowVal(r)>nowVal(byYear[r.y]))byYear[r.y]=r});
+  $("#rareYearBody").innerHTML=Object.keys(byYear).sort((a,b)=>a-b).map(y=>{const r=byYear[y];
+    return `<tr class="rec" tabindex="0" data-id="${r.id}"><td class="yr-cell">${y}</td><td><div class="t1">${esc(r.t)}</div><div class="t2">${esc(r.a)}${r.cur==="ILS"?" · 🇮🇱":""}</div></td><td class="price">${fmtILS(nowVal(r))}</td></tr>`}).join("");
+  renderBS();
+}
+let bsKind="world";
+function renderBS(){
+  const rows=bsKind==="world"?BS_WORLD:BS_ISRAEL;
+  $("#bsBody").innerHTML=rows.map(r=>`<tr><td class="yr-cell">${r[0]}</td><td><div class="t1">${esc(r[1])}</div><div class="t2">${esc(r[2])}</div></td></tr>`).join("");
+  $("#bsNote").textContent=bsKind==="world"
+    ?"מ-2000 לפי דוח IFPI השנתי של האלבום הנמכר בעולם. לפני כן: האלבום שנחשב לנמכר ביותר באותה שנה לפי המצעדים והמכירות המצטברות. 2025 הוא הערכה."
+    :"בישראל לא היה מצעד מכירות רשמי ומלא, ולכן זו רשימת אלבומי השנה הבולטים והנמכרים לפי המוניטין, רק בשנים שבהן יש אלבום מוסכם. שנים בלי הסכמה כזו הושמטו.";
+}
+$("#bsSwitch").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;bsKind=b.dataset.k;
+  document.querySelectorAll("#bsSwitch button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderBS()});
+function renderCountries(){
+  const q=$("#qCountry").value.trim();
+  $("#countryGrid").innerHTML=COUNTRIES.filter(c=>!q||c[0].includes(q)||c[2].toLowerCase().includes(q.toLowerCase())).map(([c,t,a,y,n])=>
+   `<div class="ccard"><div class="cn">${esc(c)}</div><h3>${esc(t)}</h3><div>${esc(a)} · <span class="num">${y}</span></div><div class="t2">${esc(n)}</div></div>`).join("");
+  const d=$("#decYears").value;
+  $("#yearsBody").innerHTML=BS_WORLD.filter(r=>!d||Math.floor(r[0]/10)*10==d).map(r=>`<tr><td class="yr-cell">${r[0]}</td><td><div class="t1">${esc(r[1])}</div><div class="t2">${esc(r[2])}</div></td><td>${esc(r[3])}</td></tr>`).join("");
+}
+
+/* ===================== TABS ===================== */
+const TABS=["world","israel","history","countries","games","store","account"];
+function show(tab){
+  if(!TABS.includes(tab))tab="world";
+  TABS.forEach(t=>{$("#tab-"+t).hidden=t!==tab});
+  document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
+  try{localStorage.setItem("tk_tab",tab)}catch(e){}
+}
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(b)show(b.dataset.tab)});
+
+function fillDecades(sel,years){[...new Set(years.map(y=>Math.floor(y/10)*10))].sort((a,b)=>a-b).forEach(d=>{const o=document.createElement("option");o.value=d;o.textContent="שנות ה-"+(d%100===0?d:d)+"";sel.appendChild(o)})}
+fillDecades($("#decWorld"),W.map(r=>r.y)); fillDecades($("#decYears"),BS_WORLD.map(r=>r[0]));
+["#qWorld","#decWorld","#sortWorld"].forEach(s=>$(s).addEventListener("input",renderWorld));
+$("#qIsrael").addEventListener("input",renderIsrael);
+$("#qCountry").addEventListener("input",renderCountries); $("#decYears").addEventListener("input",renderCountries);
+$("#rateIn").value=RATE;
+$("#rateIn").addEventListener("change",()=>{const v=parseFloat($("#rateIn").value); if(v>1&&v<20){RATE=v;try{localStorage.setItem("tk_rate",v)}catch(e){} renderAll()}});
+function renderAll(){renderWorld();renderIsrael();renderHistory();renderCountries();renderStore()}
+
+/* ===================== STORE + ACCOUNTS (db) ===================== */
+let db=null, me=null, shops=[], myShop=null, loggedIn=false;
+const storeMsg=(t,cls="")=>{const m=$("#storeMsg");m.textContent=t;m.className="msg "+cls};
+function itemCard(it,seller,mine){
+  return `<article class="item"><div class="sleeve" style="background:${labColor(it.artist||"")}22"><div class="vin"><i style="background:${labColor(it.artist||"")}">${esc(it.artist)}</i></div></div>
+   <div class="body"><div class="t1">${esc(it.title)}</div><div>${esc(it.artist)} · <span class="num">${esc(it.year)}</span></div>
+   <div class="meta">${esc(it.country||"")} · מצב: ${esc(it.cond)}</div>
+   ${it.desc?`<div class="t2">${esc(it.desc)}</div>`:""}
+   <div class="price num">${fmtILS(+it.price||0)}</div>
+   ${mine?`<button class="link" data-del="${esc(it.id)}">הסרת המודעה</button>`
+     :`<div class="meta">מוכר: <b dir="ltr">@${esc(seller.username)}</b><br>ליצירת קשר: <span style="user-select:all">${esc(seller.contact)}</span></div>`}
+   </div></article>`;
+}
+function renderStore(){
+  const q=$("#qStore").value.trim().toLowerCase(), srt=$("#sortStore").value;
+  let all=[]; shops.forEach(s=>(s.items||[]).forEach(it=>all.push([it,s])));
+  all=all.filter(([it])=>!q||(it.title+" "+it.artist).toLowerCase().includes(q));
+  all.sort((a,b)=>srt==="low"?a[0].price-b[0].price:srt==="high"?b[0].price-a[0].price:(b[0].created||0)-(a[0].created||0));
+  $("#storeItems").innerHTML=all.map(([it,s])=>itemCard(it,s,false)).join("");
+  $("#storeEmpty").hidden=all.length>0;
+  const mine=(myShop&&myShop.items)||[];
+  $("#myItems").innerHTML=mine.map(it=>itemCard(it,myShop,true)).join("");
+  $("#myEmpty").hidden=mine.length>0;
+}
+$("#qStore").addEventListener("input",renderStore); $("#sortStore").addEventListener("input",renderStore);
+$("#sellBtn").onclick=()=>{show("account"); if(loggedIn)$("#sTitle").focus()};
+
+async function sha(s){
+  try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+  catch(e){let h=5381;for(const c of s)h=((h*33)^c.charCodeAt(0))>>>0;return "f"+h.toString(16)}
+}
+function setLogged(v){
+  loggedIn=v; try{v?sessionStorage.setItem("tk_in",me):sessionStorage.removeItem("tk_in")}catch(e){}
+  $("#acctOut").hidden=v; $("#acctIn").hidden=!v;
+  $("#whoChip").textContent=v&&myShop?"@"+myShop.username:"אורח";
+  if(v&&myShop){$("#helloH").textContent="שלום, @"+myShop.username;$("#helloP").textContent="פרטי קשר שמוצגים לקונים: "+myShop.contact}
+}
+$("#regForm").addEventListener("submit",async e=>{
+  e.preventDefault(); const m=$("#regMsg"); m.className="msg";
+  if(!db||!me){m.textContent="צריך להיות מחוברים לחשבון Claude כדי להירשם.";m.className="msg err";return}
+  const u=$("#regUser").value.trim().toLowerCase(), p=$("#regPass").value, c=$("#regContact").value.trim();
+  if(!/^[a-z0-9_]{3,24}$/.test(u)){m.textContent="שם המשתמש יכול לכלול רק אותיות באנגלית, ספרות וקו תחתון (3–24 תווים).";m.className="msg err";return}
+  if(myShop){m.textContent="כבר יש לכם חשבון (@"+myShop.username+"). היכנסו בטופס הכניסה.";m.className="msg err";return}
+  m.textContent="רושם…";
+  try{
+    const ref=db.doc("names/"+u);
+    const lease=await ref.acquire({holder:me,ttlMs:5000});
+    if(!lease.acquired){m.textContent="מישהו אחר רושם את השם הזה ממש עכשיו. נסו שם אחר.";m.className="msg err";return}
+    const cur=await ref.get();
+    if(cur.exists&&cur.data().uid&&cur.data().uid!==me){m.textContent="שם המשתמש תפוס. בחרו שם אחר.";m.className="msg err";return}
+    await ref.set({uid:me});
+    const salt=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    await db.doc("data/users/"+me+"/auth").set({salt,hash:await sha(salt+":"+p),username:u});
+    myShop={username:u,contact:c,since:Date.now(),items:[]};
+    await db.doc("shop/"+me).set(myShop);
+    m.textContent="נרשמתם בהצלחה."; m.className="msg ok"; $("#regForm").reset(); setLogged(true); renderStore();
+  }catch(err){m.textContent=err&&err.code==="invalid_argument"?"אין לכם הרשאה לכתוב בעמוד הזה. בקשו מבעל האתר הרשאת Contributor.":"ההרשמה נכשלה. נסו שוב בעוד רגע.";m.className="msg err"}
+});
+$("#loginForm").addEventListener("submit",async e=>{
+  e.preventDefault(); const m=$("#logMsg"); m.className="msg";
+  if(!db||!me){m.textContent="צריך להיות מחוברים לחשבון Claude כדי להיכנס.";m.className="msg err";return}
+  const u=$("#logUser").value.trim().toLowerCase(), p=$("#logPass").value;
+  m.textContent="בודק…";
+  try{
+    const n=await db.doc("names/"+u).get();
+    if(!n.exists){m.textContent="שם המשתמש לא קיים. אפשר להירשם בטופס ההרשמה.";m.className="msg err";return}
+    if(n.data().uid!==me){m.textContent="שם המשתמש הזה שייך לחשבון Claude אחר.";m.className="msg err";return}
+    const a=await db.doc("data/users/"+me+"/auth").get();
+    if(!a.exists||a.data().hash!==await sha(a.data().salt+":"+p)){m.textContent="הסיסמה שגויה.";m.className="msg err";return}
+    m.textContent=""; $("#loginForm").reset(); setLogged(true); renderStore();
+  }catch(err){m.textContent="הכניסה נכשלה. נסו שוב.";m.className="msg err"}
+});
+$("#logoutBtn").onclick=()=>setLogged(false);
+$("#sellForm").addEventListener("submit",async e=>{
+  e.preventDefault(); const m=$("#sellMsg");
+  if(!myShop)return;
+  const it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),title:$("#sTitle").value.trim(),artist:$("#sArtist").value.trim(),
+    year:+$("#sYear").value,country:$("#sCountry").value.trim(),cond:$("#sCond").value,price:+$("#sPrice").value,desc:$("#sDesc").value.trim(),created:Date.now()};
+  m.textContent="מפרסם…"; m.className="msg";
+  try{ const items=[it,...(myShop.items||[])].slice(0,200); await db.doc("shop/"+me).update({items});
+    myShop={...myShop,items}; m.textContent="התקליט פורסם בחנות."; m.className="msg ok"; $("#sellForm").reset(); $("#sCountry").value="ישראל"; renderStore();
+  }catch(err){m.textContent="הפרסום נכשל. נסו שוב.";m.className="msg err"}
+});
+$("#myItems").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-del]"); if(!b||!myShop)return;
+  if(b.dataset.confirm!=="1"){b.dataset.confirm="1";b.textContent="ללחוץ שוב כדי להסיר";return}
+  const items=(myShop.items||[]).filter(i=>i.id!==b.dataset.del);
+  try{await db.doc("shop/"+me).update({items}); myShop={...myShop,items}; renderStore()}catch(err){b.textContent="ההסרה נכשלה"}
+});
+
+async function initDb(){
+  if(!window.claude||!window.claude.use){$("#acctNoDb").hidden=false;$("#acctOut").hidden=true;storeMsg("החנות זמינה כשפותחים את העמוד ב-Claude.");return}
+  const [d,u]=await Promise.all([claude.use("db"),claude.use("user")]);
+  if(!d){$("#acctNoDb").hidden=false;$("#acctOut").hidden=true;storeMsg("החנות זמינה רק לגולשים מחוברים. כדי לראות ולמכור תקליטים, היכנסו לחשבון Claude.");return}
+  db=d; me=u?await u.id():null;
+  db.collection("shop").onSnapshot(snap=>{
+    shops=snap.docs.map(x=>({uid:x.id,...x.data()}));
+    const mine=shops.find(s=>s.uid===me); if(mine)myShop=mine;
+    renderStore();
+  },()=>storeMsg("לא הצלחנו לטעון את החנות. רעננו את העמוד.","err"));
+  if(me){ try{
+    const s=await db.doc("shop/"+me).get(); if(s.exists)myShop=s.data();
+    let was=null; try{was=sessionStorage.getItem("tk_in")}catch(e){}
+    if(myShop&&was===me)setLogged(true);
+    if(myShop&&!loggedIn){$("#logUser").value=myShop.username}
+  }catch(e){} }
+}
+
+/* ===================== GAMES ===================== */
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+// one pool of albums from every list on the site, de-duplicated by title+artist
+const ALBUMS=(()=>{const m=new Map();
+  const add=(t,a,y)=>{const k=(t+"|"+a).toLowerCase(); if(!m.has(k))m.set(k,{t,a,y})};
+  W.forEach(r=>add(r.t,r.a,r.y)); IL.forEach(r=>add(r.t,r.a,r.y));
+  BS_WORLD.forEach(r=>{if(r[2]!=="שונים")add(r[1],r[2],r[0])}); BS_ISRAEL.forEach(r=>add(r[1],r[2],r[0]));
+  COUNTRIES.forEach(c=>add(c[1],c[2],c[3]));
+  return [...m.values()]})();
+const labHTML=a=>`<span class="lab" aria-hidden="true"><i style="background:${labColor(a)}"></i></span>`;
+
+document.querySelector("#gameSwitch").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  document.querySelectorAll("#gameSwitch button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  ["memory","hilo","year","artist"].forEach(g=>{$("#g-"+g).hidden=g!==b.dataset.g})});
+
+// --- memory ---
+let mem={n:10,open:[],moves:0,got:0,t0:0,timer:null,lock:false};
+function memBestKey(){return "tk_mem_"+mem.n}
+function memNew(){
+  clearInterval(mem.timer); mem={...mem,open:[],moves:0,got:0,t0:0,timer:null,lock:false};
+  const picks=shuffle(ALBUMS).slice(0,mem.n), cards=shuffle([...picks,...picks].map((al,i)=>({al,k:al.t+"|"+al.a})));
+  $("#memGrid").innerHTML=cards.map((c,i)=>`<button class="mcard" data-k="${esc(c.k)}" aria-label="קלף סגור"><div class="in"><div class="bk"></div><div class="fc"><div class="v"><i style="background:${labColor(c.al.a)}"><b>${esc(c.al.t)}</b><small>${esc(c.al.a)}</small></i></div></div></div></button>`).join("");
+  $("#memMoves").textContent="0"; $("#memTime").textContent="0:00"; $("#memDone").hidden=true;
+  const b=ls.get(memBestKey(),null); $("#memBest").textContent=b?b.moves+" מהלכים":"—";
+}
+const fmtT=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+$("#memGrid").addEventListener("click",e=>{
+  const c=e.target.closest(".mcard"); if(!c||mem.lock||c.classList.contains("up")||c.classList.contains("got"))return;
+  if(!mem.t0){mem.t0=Date.now();mem.timer=setInterval(()=>{$("#memTime").textContent=fmtT(Math.floor((Date.now()-mem.t0)/1000))},500)}
+  c.classList.add("up"); c.setAttribute("aria-label",c.querySelector("b").textContent); mem.open.push(c);
+  if(mem.open.length<2)return;
+  mem.moves++; $("#memMoves").textContent=mem.moves;
+  const [a,b]=mem.open; mem.open=[];
+  if(a.dataset.k===b.dataset.k){a.classList.add("got");b.classList.add("got");mem.got++;
+    if(mem.got===mem.n){clearInterval(mem.timer); const secs=Math.floor((Date.now()-mem.t0)/1000);
+      const best=ls.get(memBestKey(),null), rec=!best||mem.moves<best.moves;
+      if(rec){ls.set(memBestKey(),{moves:mem.moves,secs});$("#memBest").textContent=mem.moves+" מהלכים"}
+      $("#memDone").hidden=false; $("#memDone").textContent=`כל הכבוד! ${mem.n} זוגות ב-${mem.moves} מהלכים וב-${fmtT(secs)} דקות.${rec?" שיא חדש!":""}`}
+  } else {mem.lock=true; setTimeout(()=>{a.classList.remove("up");b.classList.remove("up");a.setAttribute("aria-label","קלף סגור");b.setAttribute("aria-label","קלף סגור");mem.lock=false},900)}
+});
+$("#memLevel").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  document.querySelectorAll("#memLevel button").forEach(x=>x.setAttribute("aria-pressed",x===b)); mem.n=+b.dataset.n; memNew()});
+$("#memNew").onclick=memNew;
+
+// --- higher / lower ---
+let hl={streak:0,pair:null};
+function hlRound(){
+  const all=[...W,...IL]; let a,b;
+  do{[a,b]=shuffle(all).slice(0,2)}while(Math.abs(nowVal(a)-nowVal(b))<1);
+  hl.pair=[a,b];
+  $("#hlDuel").innerHTML=[a,b].map((r,i)=>`${i?'<div class="vs">או</div>':""}<button class="pick" data-i="${i}">${labHTML(r.a)}<div class="t1">${esc(r.t)}</div><div class="t2">${esc(r.a)} · <span class="num">${r.y}</span></div><div class="t2">${esc(r.fmt)}</div><div class="price num" hidden>${fmtILS(nowVal(r))}</div></button>`).join("");
+  $("#hlMsg").textContent=""; $("#hlStreak").textContent=hl.streak; $("#hlBest").textContent=ls.get("tk_hl",0);
+}
+$("#hlDuel").addEventListener("click",e=>{
+  const p=e.target.closest(".pick"); if(!p||p.disabled)return;
+  const [a,b]=hl.pair, win=nowVal(a)>nowVal(b)?0:1, ok=+p.dataset.i===win;
+  document.querySelectorAll("#hlDuel .pick").forEach((x,i)=>{x.disabled=true;x.querySelector(".price").hidden=false;x.classList.add(i===win?"right":"wrong")});
+  if(ok){hl.streak++; if(hl.streak>ls.get("tk_hl",0))ls.set("tk_hl",hl.streak)} else hl.streak=0;
+  const m=$("#hlMsg"); m.className="msg "+(ok?"ok":"err");
+  m.textContent=ok?`נכון! רצף של ${hl.streak}.`:"לא הפעם. הרצף מתאפס.";
+  $("#hlStreak").textContent=hl.streak; $("#hlBest").textContent=ls.get("tk_hl",0);
+  setTimeout(hlRound,1700);
+});
+
+// --- quizzes (year / artist) ---
+function makeQuiz(id,key,build){
+  const st={q:0,score:0,qs:[]};
+  const head=()=>{$("#"+id+"Q").textContent=Math.min(st.q+1,10)+"/10";$("#"+id+"Score").textContent=st.score;$("#"+id+"Best").textContent=ls.get(key,0)};
+  function start(){st.q=0;st.score=0;st.qs=shuffle(ALBUMS).slice(0,10).map(build);show()}
+  function show(){head(); const box=$("#"+id+"Quiz");
+    if(st.q>=10){const best=ls.get(key,0); if(st.score>best)ls.set(key,st.score); head();
+      box.innerHTML=`<div class="gdone">סיימתם עם ${st.score} מתוך 10.${st.score>best?" שיא חדש!":""} <br><br><button class="btn red" data-again="1">סבב חדש</button></div>`;return}
+    const q=st.qs[st.q];
+    box.innerHTML=`<div class="qcard">${labHTML(q.al.a)}<div style="min-width:0"><h3>${esc(q.title)}</h3><div class="t2">${esc(q.sub)}</div></div></div>
+      <div class="opts">${q.opts.map(o=>`<button class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
+  }
+  $("#"+id+"Quiz").addEventListener("click",e=>{
+    if(e.target.closest("[data-again]"))return start();
+    const b=e.target.closest(".opt"); if(!b||b.disabled)return;
+    const q=st.qs[st.q], ok=b.dataset.v===String(q.ans);
+    document.querySelectorAll("#"+id+"Quiz .opt").forEach(x=>{x.disabled=true;if(x.dataset.v===String(q.ans))x.classList.add("right")});
+    if(!ok)b.classList.add("wrong"); else st.score++;
+    st.q++; head(); setTimeout(show,1200);
+  });
+  start();
+}
+makeQuiz("yr","tk_yr",al=>{
+  const off=shuffle([-12,-7,-4,-2,2,3,5,9,14]).slice(0,3), opts=new Set([al.y]);
+  off.forEach(o=>{const y=al.y+o; if(y<=2026)opts.add(y)});
+  for(let d=1;opts.size<4;d++)opts.add(al.y-d);
+  return {al,title:al.t,sub:al.a,ans:al.y,opts:shuffle([...opts])};
+});
+makeQuiz("ar","tk_ar",al=>{
+  const others=shuffle([...new Set(ALBUMS.map(x=>x.a))].filter(a=>a!==al.a)).slice(0,3);
+  return {al,title:al.t,sub:"שנת יציאה: "+al.y,ans:al.a,opts:shuffle([al.a,...others])};
+});
+memNew(); hlRound();
+
+renderAll();
+let startTab="world"; try{startTab=localStorage.getItem("tk_tab")||"world"}catch(e){}
+show(location.hash.slice(1)||startTab);
+initDb();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Tomer Vintage</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karantina:wght@400;700&family=Assistant:wght@400;600;700&family=Rubik:wght@400;500;700&display=swap">
+<style>
+/* Layout: a thrift-boutique rail. Garment cards hang with paper price tags; navy ink on tag paper, pink tag thread + mustard stamps */
+:root{
+  --bg:#f4eee2; --paper:#fffaf0; --ink:#1f2840; --muted:#5f6478; --line:#d9cdb6;
+  --pink:#c9435f; --mustard:#c98d14; --olive:#5d6c33; --shadow:rgba(31,40,64,.14); --chip:#ebe2cf;
+  --display:"Karantina","Rubik",Impact,sans-serif;
+  --body:"Assistant","Rubik",system-ui,sans-serif;
+  --ui:"Rubik",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#161b29; --paper:#1f2637; --ink:#f1e9da; --muted:#aab0c2; --line:#353e55;
+  --pink:#ef7690; --mustard:#f0bb4d; --olive:#a4b56f; --shadow:rgba(0,0,0,.45); --chip:#2b3349; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#161b29; --paper:#1f2637; --ink:#f1e9da; --muted:#aab0c2; --line:#353e55;
+  --pink:#ef7690; --mustard:#f0bb4d; --olive:#a4b56f; --shadow:rgba(0,0,0,.45); --chip:#2b3349; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6;
+  background-image:radial-gradient(color-mix(in srgb,var(--ink) 7%,transparent) 1px,transparent 1.4px);background-size:22px 22px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1;margin:0;text-wrap:balance;letter-spacing:.5px}
+h2{font-size:clamp(2.6rem,7vw,4rem)}
+h3{font-size:1.9rem}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mustard);outline-offset:2px}
+a{color:var(--pink)}
+.num{font-family:var(--ui);font-variant-numeric:tabular-nums}
+
+/* header */
+.top{border-bottom:2px solid var(--ink);background:var(--paper)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:14px}
+.logo{display:flex;align-items:baseline;gap:10px}
+.logo h1{font-size:clamp(3rem,9vw,4.4rem);color:var(--ink)}
+.logo h1 span{color:var(--pink)}
+.logo small{font-family:var(--ui);font-size:.72rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.ig{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-family:var(--ui);font-weight:500;font-size:.95rem;
+  color:var(--paper);background:var(--ink);padding:9px 16px;border-radius:999px}
+.ig svg{width:20px;height:20px}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs button{flex:none;border:none;background:none;padding:10px 14px;font-family:var(--ui);font-weight:500;font-size:.95rem;color:var(--muted);cursor:pointer;border-bottom:4px solid transparent}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--pink)}
+.ticker{background:var(--pink);color:#fff8f0;font-family:var(--ui);font-size:.85rem;overflow:hidden;white-space:nowrap}
+.ticker div{display:inline-block;padding-block:6px;padding-inline-start:100%}
+@media (prefers-reduced-motion:no-preference){.ticker div{animation:tick 28s linear infinite}}
+@keyframes tick{to{transform:translateX(100%)}}
+main{padding-block:28px 60px}
+.lede{color:var(--muted);max-width:66ch;margin:8px 0 0;font-size:1.08rem}
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.note{font-family:var(--ui);font-size:.82rem;color:var(--muted);border-inline-start:4px solid var(--mustard);padding:8px 12px;background:color-mix(in srgb,var(--mustard) 9%,transparent);max-width:90ch;margin:14px 0 0}
+
+/* shop */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.pill{border:1.5px solid var(--line);background:var(--paper);padding:6px 14px;border-radius:999px;cursor:pointer;font-family:var(--ui);font-size:.88rem}
+.pill[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+.controls input,.controls select{padding:9px 12px;border:1.5px solid var(--line);background:var(--paper);border-radius:6px;font-family:var(--ui);font-size:.92rem}
+.controls input{flex:1 1 220px;min-width:0}
+.rail{height:10px;border-radius:5px;background:linear-gradient(var(--muted),color-mix(in srgb,var(--muted) 50%,var(--ink)));margin:22px 0 0;box-shadow:0 3px 6px var(--shadow)}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px 18px;margin-top:-4px}
+.prod{position:relative;padding-top:26px;min-width:0}
+.prod::before{content:"";position:absolute;top:0;left:50%;width:26px;height:30px;transform:translateX(-50%);border:3px solid var(--muted);border-bottom:none;border-radius:14px 14px 0 0}
+.pcard{background:var(--paper);border:1.5px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 6px 18px var(--shadow);display:flex;flex-direction:column;height:100%}
+.pimg{aspect-ratio:4/5;max-width:100%;background:var(--chip);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pimg img{width:100%;height:100%;object-fit:cover}
+.pimg svg{width:58%;height:58%}
+.sold{position:absolute;inset:auto 0 14px 0;text-align:center;transform:rotate(-6deg);font-family:var(--display);font-size:2.6rem;color:var(--pink);
+  background:color-mix(in srgb,var(--paper) 85%,transparent);border-block:3px solid var(--pink)}
+.pbody{padding:12px 14px 14px;display:grid;gap:4px;flex:1}
+.ptitle{font-weight:700;font-size:1.05rem;line-height:1.3}
+.pmeta{font-family:var(--ui);font-size:.78rem;color:var(--muted)}
+.tagp{position:absolute;top:44px;inset-inline-start:-6px;background:var(--mustard);color:#1f2840;font-family:var(--ui);font-weight:700;padding:6px 12px 6px 18px;
+  clip-path:polygon(0 50%,12px 0,100% 0,100% 100%,12px 100%);font-variant-numeric:tabular-nums;box-shadow:0 2px 6px var(--shadow)}
+[dir="rtl"] .tagp{clip-path:polygon(100% 50%,calc(100% - 12px) 0,0 0,0 100%,calc(100% - 12px) 100%);padding:6px 18px 6px 12px}
+.btn{border:2px solid var(--ink);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:6px;cursor:pointer;font-family:var(--ui);font-weight:500;font-size:.95rem;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.pink{background:var(--pink);border-color:var(--pink);color:#fff8f0}
+.btn.sm{padding:5px 10px;font-size:.82rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.empty{text-align:center;padding:40px 18px;border:2px dashed var(--line);border-radius:8px;color:var(--muted);background:var(--paper)}
+.empty h3{color:var(--ink);margin-bottom:6px}
+
+/* magazine */
+.mag{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.art{background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:20px;display:grid;gap:8px;align-content:start;min-width:0}
+.art .kick{font-family:var(--ui);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--pink)}
+.art p{margin:0;color:var(--muted)}
+.art details summary{cursor:pointer;font-family:var(--ui);font-weight:500;color:var(--ink);font-size:.9rem;margin-top:4px}
+.art details[open] summary{margin-bottom:8px}
+.art .full p{color:var(--ink);margin:0 0 10px}
+.art ul{margin:0;padding-inline-start:20px}
+.decades{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:18px 0 30px}
+.dec{border-radius:8px;padding:16px;color:#fff8f0;display:grid;gap:6px;min-width:0;position:relative;overflow:hidden}
+.dec b{font-family:var(--display);font-size:3rem;line-height:.9}
+.dec p{margin:0;font-size:.95rem;opacity:.95}
+.dec .sw{display:flex;gap:4px}
+.dec .sw i{width:20px;height:12px;border-radius:2px;border:1px solid rgba(255,255,255,.5)}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px 22px;margin-top:12px}
+.gloss div{border-bottom:1px dashed var(--line);padding-block:8px}
+.gloss b{font-family:var(--ui)}
+
+/* videos */
+.vfeat{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.vfeat{grid-template-columns:1fr}}
+.vfeat>*{min-width:0}
+video{width:100%;max-width:100%;border-radius:8px;background:#000;display:block;box-shadow:0 8px 24px var(--shadow)}
+.vlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:22px}
+.vcard{display:grid;gap:6px;text-decoration:none;color:inherit;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.vthumb{aspect-ratio:16/9;max-width:100%;display:flex;align-items:center;justify-content:center;position:relative}
+.vthumb::after{content:"";width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7l8 5-8 5z' fill='white'/%3E%3C/svg%3E") center/60% no-repeat}
+.vthumb span{position:absolute;bottom:8px;inset-inline-start:10px;font-family:var(--display);font-size:1.7rem;color:#fff8f0;text-shadow:0 2px 6px rgba(0,0,0,.5)}
+.vcard .vt{padding:0 14px;font-weight:700}
+.vcard .vs{padding:0 14px 12px;font-family:var(--ui);font-size:.78rem;color:var(--muted)}
+
+/* club */
+.club{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+@media (max-width:860px){.club{grid-template-columns:1fr}}
+.club>*{min-width:0}
+.plan{background:var(--ink);color:var(--paper);border-radius:10px;padding:26px;position:relative;overflow:hidden}
+.plan .price{font-family:var(--display);font-size:5.5rem;line-height:.9;color:var(--mustard)}
+.plan .price small{font-size:2rem;color:var(--paper)}
+.plan ul{list-style:none;padding:0;margin:16px 0;display:grid;gap:8px}
+.plan li::before{content:"✦ ";color:var(--mustard)}
+.plan .stamp{position:absolute;top:18px;inset-inline-end:-36px;transform:rotate(-35deg);background:var(--pink);color:#fff8f0;font-family:var(--ui);font-size:.75rem;letter-spacing:.14em;padding:5px 46px}
+[dir="rtl"] .plan .stamp{transform:rotate(35deg)}
+form.f{display:grid;gap:12px}
+form.f label{display:grid;gap:4px;font-family:var(--ui);font-size:.85rem;color:var(--muted)}
+form.f input,form.f select,form.f textarea{padding:10px 12px;border:1.5px solid var(--line);background:var(--paper);border-radius:6px;font-family:var(--body);font-size:1rem;color:var(--ink)}
+.check{display:flex!important;grid-template-columns:none;align-items:flex-start;gap:8px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.row2{grid-template-columns:1fr}}
+.msg{font-family:var(--ui);font-size:.88rem;min-height:1.3em}
+.msg.err{color:var(--pink)} .msg.ok{color:var(--olive)}
+.box{background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:20px}
+
+/* games */
+.gtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.game{background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:20px}
+.wheelwrap{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+@media (max-width:700px){.wheelwrap{grid-template-columns:1fr;justify-items:center}}
+.wheel{position:relative;width:min(340px,80vw);aspect-ratio:1}
+.wheel svg{width:100%;height:100%;transform-origin:50% 50%;transition:transform 4s cubic-bezier(.17,.67,.12,1)}
+@media (prefers-reduced-motion:reduce){.wheel svg{transition:none}}
+.wheel::after{content:"";position:absolute;top:-6px;left:50%;transform:translateX(-50%);border:14px solid transparent;border-top:26px solid var(--ink)}
+.qcard{display:grid;gap:12px}
+.qtext{font-size:1.25rem;font-weight:700}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.opt{border:2px solid var(--line);background:var(--bg);border-radius:6px;padding:12px;cursor:pointer;font-family:var(--ui);text-align:center}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.right{border-color:var(--olive);background:color-mix(in srgb,var(--olive) 18%,var(--bg))}
+.opt.wrong{border-color:var(--pink);background:color-mix(in srgb,var(--pink) 14%,var(--bg))}
+.result{border:2px solid var(--olive);border-radius:8px;padding:16px;text-align:center}
+.coupon{font-family:var(--ui);font-weight:700;font-size:1.5rem;letter-spacing:.12em;border:2px dashed var(--pink);padding:8px 16px;display:inline-block;margin:8px 0;user-select:all;direction:ltr}
+.raffles{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.raf{background:var(--paper);border:1.5px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.raf .rimg{aspect-ratio:16/10;max-width:100%;background:var(--chip);display:flex;align-items:center;justify-content:center}
+.raf .rimg img{width:100%;height:100%;object-fit:cover}
+.raf .rimg svg{width:34%;height:60%}
+.raf .rb{padding:14px 16px;display:grid;gap:8px;flex:1;align-content:start}
+.badge{font-family:var(--ui);font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--chip);justify-self:start}
+.badge.open{background:color-mix(in srgb,var(--olive) 22%,transparent)}
+.badge.done{background:color-mix(in srgb,var(--pink) 20%,transparent)}
+
+/* admin */
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media (max-width:900px){.admin-grid{grid-template-columns:1fr}}
+.admin-grid>*{min-width:0}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th{font-family:var(--ui);font-size:.72rem;letter-spacing:.1em;color:var(--muted);text-align:start;padding:6px 8px;border-bottom:2px solid var(--ink);white-space:nowrap}
+td{padding:8px;border-bottom:1px dashed var(--line);vertical-align:top}
+.modal{position:fixed;inset:0;background:rgba(15,18,30,.6);display:flex;align-items:center;justify-content:center;z-index:50;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.modal .box{max-width:560px;width:100%;max-height:100%;overflow:auto}
+footer{border-top:2px solid var(--ink);padding-block:22px 34px;font-family:var(--ui);font-size:.85rem;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+</style>
+
+<div dir="rtl" lang="he">
+<header class="top">
+  <div class="wrap">
+    <div class="bar">
+      <div class="logo"><h1>Tomer <span>Vintage</span></h1><small>בגדי וינטאג' · 1920–2000</small></div>
+      <a class="ig" href="https://www.instagram.com/tomer_zilber/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+        ‎@tomer_zilber</a>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist">
+      <button data-tab="shop" aria-selected="true">החנות</button>
+      <button data-tab="mag" aria-selected="false">מגזין וינטאג'</button>
+      <button data-tab="videos" aria-selected="false">סרטונים</button>
+      <button data-tab="club" aria-selected="false">מועדון מנויים</button>
+      <button data-tab="games" aria-selected="false">משחקים והגרלות</button>
+      <button data-tab="admin" aria-selected="false" id="adminTab" hidden>ניהול החנות</button>
+    </nav>
+  </div>
+  <div class="ticker" aria-hidden="true"><div>✦ פריטים חדשים כל שבוע ✦ מנויי המועדון רואים את הדרופים 48 שעות לפני כולם ✦ הגרלה פתוחה בלשונית "משחקים והגרלות" ✦ עקבו באינסטגרם @tomer_zilber ✦</div></div>
+</header>
+
+<main class="wrap">
+<!-- SHOP -->
+<section id="tab-shop">
+  <div class="head"><div><h2>על המתלה השבוע</h2><p class="lede">פריטי וינטאג' אמיתיים, נבחרים אחד-אחד. כל פריט קיים בעותק אחד בלבד. לוחצים "אני רוצה" ואנחנו חוזרים אליכם לתיאום תשלום ומשלוח.</p></div></div>
+  <div class="filters" id="catFilters"></div>
+  <div class="controls">
+    <input id="qShop" type="search" placeholder="חיפוש: ג'ינס ליוויס, שמלת פולקה…">
+    <select id="decShop"><option value="">כל העשורים</option></select>
+    <select id="sortShop"><option value="new">החדשים קודם</option><option value="low">מחיר: מהזול</option><option value="high">מחיר: מהיקר</option></select>
+    <label class="pmeta" style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="hideSold" checked> בלי פריטים שנמכרו</label>
+  </div>
+  <div class="rail" aria-hidden="true"></div>
+  <div class="products" id="products"></div>
+  <div class="empty" id="shopEmpty"><h3>המתלה מתמלא</h3><p>הפריטים הראשונים עולים בקרוב. בינתיים אפשר לראות את מה שחדש באינסטגרם <a href="https://www.instagram.com/tomer_zilber/" target="_blank" rel="noopener">‎@tomer_zilber</a> או להצטרף למועדון ולקבל גישה מוקדמת.</p></div>
+</section>
+
+<!-- MAGAZINE -->
+<section id="tab-mag" hidden>
+  <div class="head"><div><h2>מגזין וינטאג'</h2><p class="lede">כל מה שצריך לדעת כדי לקנות, לזהות, לשלב ולשמור על בגדי וינטאג'.</p></div></div>
+  <h3>מדריך העשורים</h3>
+  <div class="decades" id="decades"></div>
+  <div class="mag" id="articles"></div>
+  <h3 style="margin-top:34px">מילון וינטאג'</h3>
+  <div class="gloss" id="gloss"></div>
+</section>
+
+<!-- VIDEOS -->
+<section id="tab-videos" hidden>
+  <div class="head"><div><h2>סרטונים</h2><p class="lede">סרטון מקורי שלנו על מאה שנות אופנה, ומבחר חיפושים מוכנים ביוטיוב לפי נושא.</p></div></div>
+  <div class="vfeat">
+    <video controls preload="metadata" poster="media/poster.jpg" src="media/vintage-decades.mp4"></video>
+    <div><h3>מסע בזמן: 100 שנות אופנת וינטאג'</h3>
+      <p class="lede">מהפלאפר של שנות ה-20 ועד הגראנג' של שנות ה-90. בכל עשור: הגזרות, הבדים והצבעים שמזהים אותו. כ-25 שניות, עם מוזיקה.</p>
+      <p class="note">רוצים לראות איך הפריטים האלה נראים היום? הפריטים החדשים עולים קודם לאינסטגרם <a href="https://www.instagram.com/tomer_zilber/" target="_blank" rel="noopener">‎@tomer_zilber</a>.</p></div>
+  </div>
+  <h3 style="margin-top:34px">עוד לצפייה ביוטיוב</h3>
+  <div class="vlist" id="vlist"></div>
+  <p class="note">הכרטיסים פותחים חיפוש ביוטיוב בלשונית חדשה, כי אי אפשר להטמיע נגן של יוטיוב בתוך העמוד.</p>
+</section>
+
+<!-- CLUB -->
+<section id="tab-club" hidden>
+  <div class="head"><div><h2>מועדון הוינטאג'</h2><p class="lede">מנוי שבועי למי שלא רוצה לפספס אף פריט.</p></div></div>
+  <div class="club">
+    <div class="plan"><div class="stamp">CLUB</div>
+      <div class="price num">70<small> ₪ לשבוע</small></div>
+      <div style="font-family:var(--ui);font-size:.9rem;opacity:.85">חיוב חודשי, מתחדש כל חודש · אפשר לבטל בכל זמן</div>
+      <ul>
+        <li>גישה לכל דרופ 48 שעות לפני שהוא עולה לחנות</li>
+        <li>10% הנחה קבועה על כל פריט</li>
+        <li>השתתפות אוטומטית בכל ההגרלות</li>
+        <li>הגרלה חודשית בלעדית למנויים בלבד</li>
+        <li>משלוח חינם מהפריט השני</li>
+        <li>ייעוץ סטיילינג אישי בהודעה באינסטגרם</li>
+      </ul>
+    </div>
+    <div class="box">
+      <div id="clubForm">
+        <h3>הצטרפות למועדון</h3>
+        <p class="lede" style="font-size:.95rem">משאירים פרטים ואנחנו חוזרים אליכם תוך יום עסקים לתיאום התשלום.</p>
+        <form class="f" id="subForm">
+          <label for="subName">שם מלא<input id="subName" required maxlength="60"></label>
+          <div class="row2"><label for="subPhone">טלפון<input id="subPhone" required maxlength="20" dir="ltr" inputmode="tel"></label>
+            <label for="subIg">אינסטגרם (לא חובה)<input id="subIg" maxlength="40" dir="ltr" placeholder="@"></label></div>
+          <label class="check" for="subOk"><input type="checkbox" id="subOk" required> <span>אני מאשר/ת שיצרו איתי קשר לגבי המנוי</span></label>
+          <button class="btn pink" type="submit">הצטרפות במחיר 70 ₪ לשבוע</button>
+          <div class="msg" id="subMsg"></div>
+        </form>
+      </div>
+      <div id="clubMember" hidden>
+        <h3>אתם במועדון!</h3><p class="lede" id="clubStatus"></p>
+        <button class="btn ghost sm" id="subCancel">ביטול המנוי</button><div class="msg" id="subCancelMsg"></div>
+      </div>
+    </div>
+  </div>
+  <p class="note">התשלום מתבצע ישירות מול החנות (ביט, פייבוקס או העברה). האתר לא גובה כסף ולא שומר פרטי אשראי.</p>
+</section>
+
+<!-- GAMES -->
+<section id="tab-games" hidden>
+  <div class="head"><div><h2>משחקים והגרלות</h2><p class="lede">משחקים, זוכים בקופונים ונכנסים להגרלות על פריטים מהמתלה.</p></div></div>
+  <div class="gtabs" id="gSwitch">
+    <button class="pill" data-g="raffle" aria-pressed="true">הגרלות</button>
+    <button class="pill" data-g="wheel" aria-pressed="false">גלגל המזל</button>
+    <button class="pill" data-g="decade" aria-pressed="false">נחשו את העשור</button>
+    <button class="pill" data-g="style" aria-pressed="false">איזה עשור אתם?</button>
+  </div>
+
+  <div id="g-raffle">
+    <div class="raffles" id="raffles"></div>
+    <div class="empty" id="raffleEmpty"><h3>ההגרלה הבאה בדרך</h3><p>כשתיפתח הגרלה חדשה היא תופיע כאן. ההכרזות יוצאות קודם באינסטגרם.</p></div>
+  </div>
+
+  <div id="g-wheel" class="game" hidden>
+    <div class="wheelwrap">
+      <div class="wheel"><svg id="wheelSvg" viewBox="-110 -110 220 220" aria-hidden="true"></svg></div>
+      <div><h3>גלגל המזל היומי</h3><p class="lede">סיבוב אחד ביום. זוכים? מקבלים קוד קופון ומציינים אותו בהזמנה.</p>
+        <button class="btn pink" id="spinBtn" style="margin-top:14px">סובבו את הגלגל</button>
+        <div id="wheelRes" style="margin-top:14px"></div></div>
+    </div>
+  </div>
+
+  <div id="g-decade" class="game" hidden>
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:var(--ui);font-size:.9rem;color:var(--muted)"><span>שאלה <b class="num" id="dqN">1/10</b></span><span>נקודות <b class="num" id="dqS">0</b></span><span>שיא <b class="num" id="dqB">0</b></span></div>
+    <div id="dq" style="margin-top:12px"></div>
+  </div>
+
+  <div id="g-style" class="game" hidden><div id="sq"></div></div>
+</section>
+
+<!-- ADMIN -->
+<section id="tab-admin" hidden>
+  <div class="head"><div><h2>ניהול החנות</h2><p class="lede">רק מי שיכול לערוך את האתר רואה את הלשונית הזאת.</p></div></div>
+  <div class="admin-grid">
+    <form class="f box" id="prodForm"><h3 id="pfTitle">פריט חדש</h3>
+      <input type="hidden" id="pfId">
+      <label for="pfName">שם הפריט<input id="pfName" required maxlength="80" placeholder="ז'קט ג'ינס ליוויס, שנות ה-80"></label>
+      <div class="row2"><label for="pfCat">קטגוריה<select id="pfCat"></select></label>
+        <label for="pfDec">עשור<select id="pfDec"></select></label></div>
+      <div class="row2"><label for="pfSize">מידה<input id="pfSize" maxlength="20" placeholder="M / 38 / W30"></label>
+        <label for="pfPrice">מחיר (₪)<input id="pfPrice" type="number" min="1" required></label></div>
+      <label for="pfCond">מצב<select id="pfCond"><option>מעולה</option><option>טוב מאוד</option><option>טוב, עם סימני שימוש</option><option>דדסטוק (לא נלבש)</option></select></label>
+      <label for="pfDesc">תיאור ומידות<textarea id="pfDesc" rows="3" maxlength="600" placeholder="רוחב בית חזה 52 ס&quot;מ, אורך 68 ס&quot;מ…"></textarea></label>
+      <label for="pfImg">תמונה<input id="pfImg" type="file" accept="image/*"></label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn pink" type="submit">שמירה</button><button class="btn ghost" type="button" id="pfReset">ניקוי</button></div>
+      <div class="msg" id="pfMsg"></div>
+    </form>
+    <div class="box"><h3>הפריטים בחנות</h3><div class="tbl"><table><thead><tr><th>פריט</th><th>מחיר</th><th>מצב</th><th></th></tr></thead><tbody id="adProds"></tbody></table></div></div>
+
+    <form class="f box" id="rafForm"><h3>הגרלה חדשה</h3>
+      <label for="rfTitle">שם ההגרלה<input id="rfTitle" required maxlength="60" placeholder="הגרלת סוף החודש"></label>
+      <label for="rfPrize">הפרס<input id="rfPrize" required maxlength="120" placeholder="שמלת פולקה משנות ה-50, מידה S"></label>
+      <label for="rfEnd">תאריך סיום<input id="rfEnd" type="date" required></label>
+      <label for="rfImg">תמונה (לא חובה)<input id="rfImg" type="file" accept="image/*"></label>
+      <button class="btn pink" type="submit">פתיחת ההגרלה</button><div class="msg" id="rfMsg"></div>
+    </form>
+    <div class="box"><h3>הגרלות</h3><div id="adRaffles"></div></div>
+
+    <div class="box" style="grid-column:1/-1"><h3>הזמנות</h3><div class="tbl"><table><thead><tr><th>תאריך</th><th>פריט</th><th>לקוח</th><th>טלפון</th><th>הערה</th></tr></thead><tbody id="adOrders"></tbody></table></div></div>
+    <div class="box" style="grid-column:1/-1"><h3>מנויי המועדון</h3><div class="tbl"><table><thead><tr><th>הצטרפות</th><th>שם</th><th>טלפון</th><th>אינסטגרם</th><th>סטטוס</th></tr></thead><tbody id="adSubs"></tbody></table></div></div>
+  </div>
+  <div class="note">קודי הקופון של גלגל המזל: <b dir="ltr">VINT5</b> (5%), <b dir="ltr">VINT10</b> (10%), <b dir="ltr">VINT15</b> (15%), <b dir="ltr">SHIPFREE</b> (משלוח חינם). כבדו אותם כשלקוח מציין אותם בהזמנה.</div>
+</section>
+</main>
+
+<div class="wrap"><footer>
+  <span>Tomer Vintage · בגדי וינטאג' נבחרים</span>
+  <a class="ig" href="https://www.instagram.com/tomer_zilber/" target="_blank" rel="noopener">עקבו באינסטגרם ‎@tomer_zilber</a>
+</footer></div>
+
+<div class="modal" id="orderModal" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="omTitle">
+  <h3 id="omTitle">הזמנת פריט</h3><p class="lede" id="omItem" style="font-size:1rem"></p>
+  <form class="f" id="orderForm">
+    <label for="oName">שם מלא<input id="oName" required maxlength="60"></label>
+    <div class="row2"><label for="oPhone">טלפון<input id="oPhone" required maxlength="20" dir="ltr" inputmode="tel"></label>
+      <label for="oIg">אינסטגרם (לא חובה)<input id="oIg" maxlength="40" dir="ltr" placeholder="@"></label></div>
+    <label for="oNote">הערה / קוד קופון<input id="oNote" maxlength="120"></label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn pink" type="submit">שליחת ההזמנה</button><button class="btn ghost" type="button" id="omClose">ביטול</button></div>
+    <div class="msg" id="oMsg"></div>
+  </form>
+  <p class="note">אחרי השליחה ניצור איתכם קשר לתיאום תשלום ומשלוח. שאלות? כתבו לנו <a href="https://www.instagram.com/tomer_zilber/" target="_blank" rel="noopener">באינסטגרם</a>.</p>
+</div></div>
+</div>
+
+<script>
+/* ============ CONTENT ============ */
+const CATS=[["dress","שמלות"],["top","חולצות"],["pants","מכנסיים וג'ינס"],["jacket","ז'קטים ומעילים"],["skirt","חצאיות"],["knit","סריגים"],["shoes","נעליים"],["bag","תיקים"],["hat","כובעים"],["acc","תכשיטים ואקססוריז"],["men","בגדי גברים"]];
+const DECS=["1920","1930","1940","1950","1960","1970","1980","1990","2000"];
+const ICON={ // simple garment silhouettes
+ dress:'<path d="M38 8h24l-4 18 18 66H24l18-66z" />',
+ top:'<path d="M30 10l12 6h16l12-6 20 18-12 14-8-6v58H30V36l-8 6-12-14z"/>',
+ pants:'<path d="M28 8h44l6 92H56l-6-56-6 56H22z"/>',
+ jacket:'<path d="M30 8l14 10 6 14 6-14 14-10 22 20-8 70H68V44l-18 8-18-8v54H16L8 28z"/>',
+ skirt:'<path d="M34 14h32l18 76H16z"/>',
+ knit:'<path d="M30 10h40l22 22-10 12-8-8v62H26V36l-8 8-10-12z"/><path d="M26 86h48" stroke-width="4"/>',
+ shoes:'<path d="M14 60h30l10 14h34c6 0 8 10 0 12H14z"/>',
+ bag:'<path d="M20 38h60l-6 54H26z"/><path d="M36 38c0-22 28-22 28 0" fill="none" stroke-width="6"/>',
+ hat:'<path d="M30 60c0-30 40-30 40 0z"/><ellipse cx="50" cy="64" rx="40" ry="10"/>',
+ acc:'<circle cx="50" cy="50" r="30" fill="none" stroke-width="8"/><circle cx="50" cy="20" r="8"/>',
+ men:'<path d="M30 8l14 10 6 14 6-14 14-10 22 20-8 70H68V44l-18 8-18-8v54H16L8 28z"/><path d="M50 34l-5 10 5 30 5-30z"/>'};
+const icon=(c,col)=>`<svg viewBox="0 0 100 100" fill="${col}" stroke="${col}" aria-hidden="true">${ICON[c]||ICON.top}</svg>`;
+const DECADE_GUIDE=[
+ ["1920","שנות ה-20","מותן נמוכה, קו ישר, שמלות פלאפר עם פרנזים, חרוזים ופאייטים. כובעי קלושה ושיער קצר.",["#151418","#c9a24a","#e8dcc4"]],
+ ["1930","שנות ה-30","גזרת אלכסון (Bias Cut) שנצמדת לגוף, משי וריון זורמים, כתפיים מודגשות וזוהר הוליוודי.",["#46283c","#c496a0","#ece1d2"]],
+ ["1940","שנות ה-40","שנות המלחמה: חליפות מחויטות, כתפיות מרופדות, חצאיות באורך הברך וחיסכון בבד.",["#283c32","#963c32","#dccdaf"]],
+ ["1950","שנות ה-50","מותן צרה וחצאית מעגל רחבה, תחתוניות, נקודות פולקה, ג'ינס וז'קטי עור של הרוקנרול.",["#c83c50","#faf0e6","#283c6e"]],
+ ["1960","שנות ה-60","המיני של מרי קוואנט, סגנון מוד, הדפסי פופ-ארט ובסוף העשור פסיכדליה והיפים.",["#f0781e","#e63c8c","#fadc3c"]],
+ ["1970","שנות ה-70","מכנסי פעמון, דנים מכל הכיוונים, הדפסים פרחוניים, זמש ופרנזים, ודיסקו נוצץ.",["#8c501e","#dc9628","#6e7832"]],
+ ["1980","שנות ה-80","כתפיות ענק, צבעי ניאון, בגדי אירובי, ז'קטים מעוצבים ומעילי ג'ינס חומצה.",["#1e1e3c","#fa3c96","#3cdcdc"]],
+ ["1990","שנות ה-90","גראנג' ופלנל, ג'ינס רחב, מינימליזם, שמלות סלפ, והיפ-הופ עם לוגואים גדולים.",["#3c1e1e","#aa3228","#283250"]],
+ ["2000","Y2K","מכנסיים נמוכים, אימוניות ולור, נצנצים, משקפי שמש צבעוניים וטופים קצרים.",["#b46ec8","#f0b4dc","#a0d2f0"]],
+];
+const ARTICLES=[
+ ["יסודות","מה זה בכלל וינטאג'?","וינטאג', רטרו, אנטיק ודדסטוק הם לא אותו דבר.",
+  `<p><b>וינטאג'</b> הוא פריט שיוצר לפני 20 שנה לפחות ומייצג את התקופה שבה נוצר. <b>אנטיק</b> הוא פריט בן 100 שנה ומעלה. <b>רטרו</b> הוא פריט חדש שעוצב בהשראת תקופה ישנה.</p><p><b>דדסטוק</b> (Deadstock) הוא פריט ישן שמעולם לא נמכר ולא נלבש, לפעמים אפילו עם התווית המקורית. זה החלום של כל אספן.</p><p>מה שהופך פריט וינטאג' למבוקש: נדירות, מצב, מותג, ועד כמה הוא מייצג את התקופה שלו.</p>`],
+ ["מדריך","איך מזהים פריט וינטאג' אמיתי","התוויות, הרוכסנים והתפרים מסגירים את הגיל.",
+  `<ul><li><b>תווית האיגוד:</b> בבגדים אמריקאיים רבים עד אמצע שנות ה-90 תפרו תווית של איגוד עובדי הטקסטיל (ILGWU). העיצוב שלה השתנה לאורך השנים ועוזר לתארך את הפריט.</li><li><b>רוכסנים:</b> רוכסני מתכת היו הסטנדרט עד שנות ה-60. רוכסני ניילון ופלסטיק נפוצים יותר מאז שנות ה-60 וה-70.</li><li><b>תוויות כביסה:</b> בארה"ב הן הפכו לחובה בתחילת שנות ה-70. פריט אמריקאי בלי תווית כביסה הוא כנראה ישן יותר.</li><li><b>מספר RN:</b> מספר רישום של יצרן אמריקאי. אפשר לחפש אותו ולגלות מי ייצר את הבגד ומתי.</li><li><b>תפר יחיד:</b> חולצות טי עם תפר יחיד בשרוול ובשוליים נפוצות עד אמצע שנות ה-90.</li><li><b>עבודת יד:</b> תפרים בגימור ידני, תפרי זיגזג, כפתורים מתכת או זכוכית, ומכפלות רחבות מעידים על גיל.</li></ul>`],
+ ["מדריך","מידות וינטאג' זה סיפור אחר","מידה 12 משנות ה-60 היא לא מידה 12 של היום.",
+  `<p>מידות השתנו מאוד לאורך השנים, ובגדי וינטאג' לרוב קטנים יותר מהמידה הכתובה. לכן אנחנו תמיד מציינים מידות בסנטימטרים.</p><p><b>איך מודדים:</b> קחו בגד שיושב עליכם טוב, הניחו אותו שטוח ומדדו רוחב בית חזה (מבית שחי לבית שחי), מותן, אורך ואורך שרוול. השוו למידות בתיאור הפריט.</p><p>תמיד אפשר לשאול אותנו באינסטגרם לפני ההזמנה.</p>`],
+ ["בדים","מדריך הבדים של הוינטאג'","ממה עשוי הבגד וממה זה משנה.",
+  `<ul><li><b>צמר:</b> חם ועמיד, אבל העש אוהב אותו. בודקים חורים קטנים מול האור.</li><li><b>משי:</b> עדין ומבריק. נפוץ בשמלות ובחולצות ערב.</li><li><b>ריון (ויסקוזה):</b> סיב חצי-סינתטי שהיה פופולרי מאוד בשנות ה-30 וה-40. זורם ונעים, אבל נוטה להתכווץ במים.</li><li><b>פוליאסטר:</b> הכוכב של שנות ה-70. לא מתקמט ולא דוהה.</li><li><b>אצטט:</b> מבריק, נפוץ בבטנות ובשמלות ערב. רגיש לחום ולאצטון.</li><li><b>דנים סלבג':</b> נארג על נולים צרים וישנים, עם שוליים סגורים בקצה הבד. הסימן של ג'ינס איכותי וישן.</li></ul>`],
+ ["טיפול","איך שומרים על בגדי וינטאג'","כביסה, גיהוץ ואחסון בלי להרוס.",
+  `<ul><li>כביסת יד במים קרים עם סבון עדין, או ניקוי יבש לצמר, משי וריון.</li><li>בלי מייבש. מייבשים שטוח על מגבת, בצל.</li><li>קיטור עדיף על מגהץ. אם מגהצים, מבפנים ובחום נמוך.</li><li>קולבים מרופדים לשמלות, וסריגים מקופלים במגירה כדי שלא יימתחו.</li><li>עץ ארז או לבנדר נגד עש. מחסנים במקום יבש וחשוך.</li><li>לפני כל ניקוי כתמים, בודקים קודם במקום נסתר.</li></ul>`],
+ ["סטיילינג","איך משלבים וינטאג' בלי להיראות בתחפושת","פריט אחד מרכזי וכל השאר עכשווי.",
+  `<p>הכלל הכי פשוט: <b>פריט וינטאג' אחד בלוק</b>, והשאר מודרני. ז'קט עור משנות ה-70 עם ג'ינס ישר וסניקרס לבנות. שמלת פולקה משנות ה-50 עם ג'קט ג'ינס ומגפיים.</p><p>משחקים עם פרופורציות: חולצה רחבה משנות ה-90 עם חצאית צמודה. ואקססוריז קטנים, כמו עגילים, חגורה או משקפיים, הם הדרך הכי קלה להתחיל.</p>`],
+ ["קיימות","למה וינטאג' זה הבחירה הירוקה","הבגד הכי ירוק הוא זה שכבר קיים.",
+  `<p>תעשיית האופנה היא מהמזהמות בעולם: ייצור בגד חדש דורש מים, אנרגיה וחומרי גלם, ומיליוני טונות של בגדים נזרקים כל שנה.</p><p>כל פריט וינטאג' שאתם קונים מאריך את חיי הבגד וחוסך ייצור של פריט חדש. בנוסף, בגדים ישנים נתפרו לרוב מבדים איכותיים יותר ונבנו להחזיק.</p>`],
+ ["ציד","איפה מוצאים וינטאג' טוב","שווקים, חנויות יד שנייה ומה לבדוק לפני שקונים.",
+  `<p>שווקי פשפשים, חנויות יד שנייה, ירידים ומכירות בתים הם מקורות מעולים. מגיעים מוקדם, באים עם סבלנות ומחפשים בדים טובים לפני מותגים.</p><p><b>לפני שקונים בודקים:</b> כתמים מתחת לבית השחי, חורי עש, רוכסן שעובד, תפרים שנפתחים וריח. רוב הדברים ניתנים לתיקון, אבל כדאי לדעת מראש.</p>`],
+];
+const GLOSS=[["דדסטוק","פריט ישן שלא נמכר ולא נלבש מעולם"],["סלבג'","שוליים סגורים של בד דנים שנארג על נול ישן"],["תפר יחיד","תפר אחד בשוליים, נפוץ בחולצות טי עד אמצע שנות ה-90"],["ביאס קאט","גזירה באלכסון לסיבי הבד, שנצמדת לגוף"],["פלאפר","הסגנון של שנות ה-20: שמלה ישרה ומותן נמוכה"],["ניו לוק","הקו של דיור מ-1947: מותן צרה וחצאית רחבה"],["מוד","סגנון בריטי של שנות ה-60: קווים נקיים וגזרות קצרות"],["Y2K","אופנת סוף שנות ה-90 ותחילת שנות ה-2000"],["RN","מספר רישום יצרן אמריקאי שמופיע על התווית"],["מצב VG","Very Good: מעט סימני שימוש שלא פוגעים בפריט"],["אפסייקלינג","שדרוג פריט ישן לפריט חדש ומעוצב"],["פטינה","הבלאי הטבעי שנותן לפריט אופי, בעיקר בעור ובדנים"]];
+const VIDEOS=[["היסטוריית האופנה","100 שנות אופנה בדקות","100 years of fashion history","#1f2840"],["זיהוי וינטאג'","איך יודעים שהפריט באמת וינטאג'","how to identify vintage clothing labels","#c9434f"],["ג'ינס","ליוויס 501: ההיסטוריה של הג'ינס","levi's 501 history vintage denim","#2f4f7c"],["ציד וינטאג'","ציד בשווקי פשפשים","vintage thrift haul flea market","#5d6c33"],["סטיילינג","איך לשלב וינטאג' בלוק יומיומי","how to style vintage clothes modern","#c98d14"],["טיפול","כביסה ותיקון של בגדי וינטאג'","how to care for vintage clothing","#6b2f5d"],["שנות ה-50","אופנת שנות ה-50","1950s fashion history","#c83c50"],["שנות ה-70","אופנת שנות ה-70","1970s fashion history","#8c501e"]];
+const DECADE_Q=[["מכנסי פעמון, זמש עם פרנזים והדפסים פרחוניים","1970"],["שמלה ישרה עם מותן נמוכה, פרנזים וחרוזים","1920"],["חצאית מעגל רחבה עם תחתוניות ונקודות פולקה","1950"],["כתפיות ענק, צבעי ניאון ובגדי אירובי","1980"],["חולצת פלנל משובצת, ג'ינס קרוע ומגפי עבודה","1990"],["חליפה מחויטת עם כתפיות מרופדות וחיסכון בבד בגלל המלחמה","1940"],["שמלת מיני, מגפי גו-גו והדפס גאומטרי שחור-לבן","1960"],["שמלת משי בגזרת אלכסון, זוהר הוליוודי","1930"],["מכנסי טרנינג מקטיפה ורודה ומשקפי שמש צבעוניים","2000"],["מעיל ג'ינס בשטיפת חומצה","1980"],["חליפת דיסקו מבריקה ומכנסיים רחבים","1970"],["שמלת סלפ פשוטה מסאטן","1990"],["כובע קלושה צמוד לראש","1920"],["ניו לוק של דיור: מותן צרה וחצאית מלאה","1950"],["שמלת פסיכדליה בצבעים זוהרים","1960"]];
+const STYLE_Q=[
+ ["מה אתם לובשים לשישי בערב?",[["שמלה נוצצת עם פרנזים","1920"],["חצאית מעגל ונעלי בובה","1950"],["מכנסי פעמון וחולצה פרחונית","1970"],["פלנל, ג'ינס רחב ומגפיים","1990"]]],
+ ["השיר שתמיד מרים אתכם:",[["ג'אז של ביג-בנד","1920"],["אלביס","1950"],["אבבא או בי ג'יז","1970"],["נירוונה","1990"]]],
+ ["האקססורי שלכם:",[["מחרוזת פנינים ארוכה","1920"],["משקפי חתול","1950"],["משקפיים עגולים צבעוניים","1970"],["שרשרת צ'וקר","1990"]]],
+ ["הצבע האהוב עליכם:",[["שחור וזהב","1920"],["אדום ולבן","1950"],["חרדל וחום","1970"],["בורדו ואפור","1990"]]],
+ ["סרט לערב בבית:",[["משהו בשחור-לבן","1920"],["מחזמר צבעוני","1950"],["סרט רוד-טריפ","1970"],["קומדיה רומנטית עם הרבה פלנל","1990"]]],
+];
+const STYLE_RES={"1920":["אתם שנות ה-20!","זוהר, חופש ומסיבות עד הבוקר. חפשו בחנות חרוזים, פאייטים ומותן נמוכה."],"1950":["אתם שנות ה-50!","קלאסיים ונשיים עם קריצה של רוקנרול. חפשו חצאיות מעגל ונקודות פולקה."],"1970":["אתם שנות ה-70!","חופשיים, חמים וקצת היפים. חפשו פעמונים, זמש ודנים."],"1990":["אתם שנות ה-90!","קוליים בלי להתאמץ. חפשו פלנל, ג'ינס רחב ושמלות סלפ."]};
+const WHEEL=[["5% הנחה","VINT5","#c9434f"],["נסו מחר","","#1f2840"],["10% הנחה","VINT10","#c98d14"],["משלוח חינם","SHIPFREE","#5d6c33"],["נסו מחר","","#6b2f5d"],["15% הנחה","VINT15","#2f4f7c"]];
+
+/* ============ HELPERS ============ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ils=v=>"₪"+Math.round(+v||0).toLocaleString("en-US");
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const catName=c=>(CATS.find(x=>x[0]===c)||[,""])[1];
+const decName=d=>d==="2000"?"Y2K":"שנות ה-"+d.slice(2);
+const today=()=>new Date().toISOString().slice(0,10);
+const fmtDate=ms=>{try{return new Date(ms).toLocaleDateString("he-IL")}catch(e){return ""}};
+
+/* ============ TABS ============ */
+const TABS=["shop","mag","videos","club","games","admin"];
+function show(t){if(!TABS.includes(t)||(t==="admin"&&$("#adminTab").hidden))t="shop";
+  TABS.forEach(x=>$("#tab-"+x).hidden=x!==t);
+  document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
+  store.set("tv_tab",t)}
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(b)show(b.dataset.tab)});
+
+/* ============ STATIC CONTENT ============ */
+$("#decades").innerHTML=DECADE_GUIDE.map(([y,n,p,c])=>`<div class="dec" style="background:linear-gradient(135deg,${c[0]},color-mix(in srgb,${c[0]} 70%,${c[1]}))"><b>${y==="2000"?"Y2K":y+"s"}</b><strong>${n}</strong><p>${p}</p><div class="sw">${c.map(x=>`<i style="background:${x}"></i>`).join("")}</div></div>`).join("");
+$("#articles").innerHTML=ARTICLES.map(([k,t,s,full])=>`<article class="art"><span class="kick">${k}</span><h3>${t}</h3><p>${s}</p><details><summary>לקריאת הכתבה</summary><div class="full">${full}</div></details></article>`).join("");
+$("#gloss").innerHTML=GLOSS.map(([t,d])=>`<div><b>${t}</b> · ${d}</div>`).join("");
+$("#vlist").innerHTML=VIDEOS.map(([k,t,q,c])=>`<a class="vcard" href="https://www.youtube.com/results?search_query=${encodeURIComponent(q)}" target="_blank" rel="noopener"><div class="vthumb" style="background:linear-gradient(135deg,${c},color-mix(in srgb,${c} 55%,#000))"><span>${k}</span></div><div class="vt">${t}</div><div class="vs">חיפוש ביוטיוב ↗</div></a>`).join("");
+
+/* ============ SHOP ============ */
+let products=[], catSel="";
+$("#catFilters").innerHTML=`<button class="pill" data-c="" aria-pressed="true">הכל</button>`+CATS.map(([k,n])=>`<button class="pill" data-c="${k}" aria-pressed="false">${n}</button>`).join("");
+$("#catFilters").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;catSel=b.dataset.c;
+  document.querySelectorAll("#catFilters .pill").forEach(x=>x.setAttribute("aria-pressed",x===b));renderShop()});
+DECS.forEach(d=>{[$("#decShop"),$("#pfDec")].forEach(s=>{const o=document.createElement("option");o.value=d;o.textContent=decName(d);s.appendChild(o)})});
+CATS.forEach(([k,n])=>{const o=document.createElement("option");o.value=k;o.textContent=n;$("#pfCat").appendChild(o)});
+["#qShop","#decShop","#sortShop","#hideSold"].forEach(s=>$(s).addEventListener("input",renderShop));
+function prodCard(p){
+  return `<div class="prod"><article class="pcard">
+   <div class="pimg">${p.img?`<img src="${esc(p.img)}" alt="${esc(p.title)}" loading="lazy">`:icon(p.cat,"var(--muted)")}${p.sold?'<div class="sold">נמכר</div>':""}</div>
+   <div class="tagp">${ils(p.price)}</div>
+   <div class="pbody"><div class="ptitle">${esc(p.title)}</div>
+    <div class="pmeta">${esc(catName(p.cat))} · ${esc(decName(p.dec||""))}${p.size?" · מידה "+esc(p.size):""} · ${esc(p.cond||"")}</div>
+    ${p.desc?`<div class="pmeta" style="color:var(--ink)">${esc(p.desc)}</div>`:""}
+    <div style="margin-top:auto;padding-top:8px;display:flex;gap:6px;flex-wrap:wrap">${p.sold?"":`<button class="btn pink sm" data-order="${esc(p.id)}">אני רוצה</button>`}
+     <a class="btn ghost sm" href="https://www.instagram.com/tomer_zilber/" target="_blank" rel="noopener">שאלה באינסטגרם</a></div>
+   </div></article></div>`;
+}
+function renderShop(){
+  const q=$("#qShop").value.trim().toLowerCase(), d=$("#decShop").value, s=$("#sortShop").value, hide=$("#hideSold").checked;
+  let list=products.filter(p=>(!catSel||p.cat===catSel)&&(!d||p.dec===d)&&(!hide||!p.sold)&&(!q||((p.title||"")+" "+(p.desc||"")).toLowerCase().includes(q)));
+  list.sort((a,b)=>s==="low"?a.price-b.price:s==="high"?b.price-a.price:(b.created||0)-(a.created||0));
+  $("#products").innerHTML=list.map(prodCard).join("");
+  $("#shopEmpty").hidden=list.length>0;
+  if(!list.length&&products.length){$("#shopEmpty").innerHTML="<h3>לא נמצאו פריטים</h3><p>נסו קטגוריה או עשור אחרים.</p>"}
+}
+
+/* ============ GAMES ============ */
+$("#gSwitch").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  document.querySelectorAll("#gSwitch .pill").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  ["raffle","wheel","decade","style"].forEach(g=>$("#g-"+g).hidden=g!==b.dataset.g)});
+// wheel
+(function(){
+  const n=WHEEL.length, a=360/n; let s="";
+  WHEEL.forEach(([t,,c],i)=>{const a0=(i*a-90-a/2)*Math.PI/180,a1=((i+1)*a-90-a/2)*Math.PI/180;
+    s+=`<path d="M0 0L${100*Math.cos(a0)} ${100*Math.sin(a0)}A100 100 0 0 1 ${100*Math.cos(a1)} ${100*Math.sin(a1)}Z" fill="${c}" stroke="#fffaf0" stroke-width="2"/>`;
+    const m=(i*a-90)*Math.PI/180;
+    s+=`<text x="${62*Math.cos(m)}" y="${62*Math.sin(m)}" fill="#fffaf0" font-family="Rubik,sans-serif" font-size="11" font-weight="700" text-anchor="middle" dominant-baseline="middle" transform="rotate(${i*a} ${62*Math.cos(m)} ${62*Math.sin(m)})">${t}</text>`});
+  s+=`<circle r="16" fill="#fffaf0" stroke="#1f2840" stroke-width="4"/>`;
+  $("#wheelSvg").innerHTML=s;
+})();
+let wheelRot=0;
+function wheelState(){const last=store.get("tv_spin",null);
+  if(last&&last.day===today()){$("#spinBtn").disabled=true;showPrize(last.i,true)}}
+function showPrize(i,old){const [t,code]=WHEEL[i];
+  $("#wheelRes").innerHTML=code?`<div class="result"><b>${old?"הזכייה של היום":"זכיתם!"} ${t}</b><br><span class="coupon">${code}</span><br><span class="pmeta">ציינו את הקוד בהערה כשאתם מזמינים פריט. תקף להזמנה אחת.</span></div>`
+   :`<div class="result" style="border-color:var(--line)"><b>הפעם לא.</b> חוזרים מחר לסיבוב נוסף.</div>`}
+$("#spinBtn").onclick=()=>{
+  const i=Math.floor(Math.random()*WHEEL.length), a=360/WHEEL.length;
+  wheelRot+=360*5+(360-i*a)-(wheelRot%360);
+  $("#wheelSvg").style.transform=`rotate(${wheelRot}deg)`; $("#spinBtn").disabled=true; $("#wheelRes").innerHTML="";
+  store.set("tv_spin",{day:today(),i});
+  setTimeout(()=>showPrize(i,false),matchMedia("(prefers-reduced-motion: reduce)").matches?50:4100);
+};
+wheelState();
+// decade quiz
+let dq={i:0,s:0,qs:[]};
+function dqStart(){dq={i:0,s:0,qs:shuffle(DECADE_Q).slice(0,10)};dqShow()}
+function dqHead(){$("#dqN").textContent=Math.min(dq.i+1,10)+"/10";$("#dqS").textContent=dq.s;$("#dqB").textContent=store.get("tv_dq",0)}
+function dqShow(){dqHead();
+  if(dq.i>=10){const b=store.get("tv_dq",0);if(dq.s>b)store.set("tv_dq",dq.s);dqHead();
+    $("#dq").innerHTML=`<div class="result"><h3>${dq.s}/10</h3><p>${dq.s>=8?"מומחים לוינטאג'! תקבלו קוד <span class='coupon'>VINT10</span>":dq.s>=5?"לא רע בכלל. עוד קצת קריאה במגזין ואתם שם.":"שווה להציץ במדריך העשורים במגזין."}${dq.s>b?" <b>שיא חדש!</b>":""}</p><button class="btn pink" id="dqAgain">משחק חדש</button></div>`;return}
+  const [txt,ans]=dq.qs[dq.i];
+  const opts=shuffle([ans,...shuffle(DECS.filter(d=>d!==ans)).slice(0,3)]);
+  $("#dq").innerHTML=`<div class="qcard"><div class="qtext">${txt}</div><div class="opts">${opts.map(o=>`<button class="opt" data-v="${o}">${decName(o)}</button>`).join("")}</div></div>`}
+$("#dq").addEventListener("click",e=>{
+  if(e.target.id==="dqAgain")return dqStart();
+  const b=e.target.closest(".opt");if(!b||b.disabled)return;const ans=dq.qs[dq.i][1];
+  document.querySelectorAll("#dq .opt").forEach(x=>{x.disabled=true;if(x.dataset.v===ans)x.classList.add("right")});
+  if(b.dataset.v===ans)dq.s++;else b.classList.add("wrong");dq.i++;dqHead();setTimeout(dqShow,1100)});
+dqStart();
+// style quiz
+let sq={i:0,score:{}};
+function sqShow(){
+  if(sq.i>=STYLE_Q.length){const top=Object.entries(sq.score).sort((a,b)=>b[1]-a[1])[0][0];const [h,p]=STYLE_RES[top];
+    $("#sq").innerHTML=`<div class="result"><h3>${h}</h3><p>${p}</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn pink" data-shop="${top}">לפריטים מהעשור שלכם</button><button class="btn ghost" id="sqAgain">שוב</button></div></div>`;return}
+  const [q,opts]=STYLE_Q[sq.i];
+  $("#sq").innerHTML=`<div class="qcard"><div class="pmeta">שאלה ${sq.i+1} מתוך ${STYLE_Q.length}</div><div class="qtext">${q}</div><div class="opts">${shuffle(opts).map(([t,d])=>`<button class="opt" data-d="${d}">${t}</button>`).join("")}</div></div>`}
+$("#sq").addEventListener("click",e=>{
+  if(e.target.id==="sqAgain"){sq={i:0,score:{}};return sqShow()}
+  const sh=e.target.closest("[data-shop]");if(sh){$("#decShop").value=sh.dataset.shop;renderShop();show("shop");return}
+  const b=e.target.closest(".opt");if(!b)return;sq.score[b.dataset.d]=(sq.score[b.dataset.d]||0)+1;sq.i++;sqShow()});
+sqShow();
+
+/* ============ DATA (db) ============ */
+let db=null, me=null, assets=null, member=null, raffles=[], isAdmin=false;
+function needDb(m){m.textContent="כדי לשלוח צריך להיכנס לעמוד עם חשבון Claude מחובר. אפשר גם לכתוב לנו באינסטגרם @tomer_zilber.";m.className="msg err"}
+const memberRef=()=>db.doc("members/"+me);
+async function saveMember(patch){
+  const base=member||{created:Date.now(),orders:[],raffles:{}};
+  const next={...base,...patch,updated:Date.now()};
+  await memberRef().set(next); member=next; renderMemberBits();
+}
+function fillContact(){if(!member)return;[["#oName","#subName"],["#oPhone","#subPhone"],["#oIg","#subIg"]].forEach(([a,b],i)=>{const v=[member.name,member.phone,member.ig][i]||"";[a,b].forEach(s=>{if(!$(s).value)$(s).value=v})})}
+function renderMemberBits(){
+  const sub=member&&member.sub&&member.sub.status!=="cancelled";
+  $("#clubForm").hidden=!!sub; $("#clubMember").hidden=!sub;
+  if(sub)$("#clubStatus").textContent=member.sub.status==="active"?"המנוי שלכם פעיל. תודה שאתם איתנו!":`הבקשה התקבלה ב-${fmtDate(member.sub.at)}. ניצור איתכם קשר לתיאום התשלום.`;
+  renderRaffles(); fillContact();
+}
+// order
+let orderPid=null;
+document.addEventListener("click",e=>{const b=e.target.closest("[data-order]");if(!b)return;
+  const p=products.find(x=>x.id===b.dataset.order);if(!p)return;orderPid=p.id;
+  $("#omItem").textContent=`${p.title} · ${ils(p.price)}`;$("#oMsg").textContent="";fillContact();$("#orderModal").hidden=false;$("#oName").focus()});
+$("#omClose").onclick=()=>$("#orderModal").hidden=true;
+$("#orderModal").addEventListener("click",e=>{if(e.target.id==="orderModal")$("#orderModal").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#orderModal").hidden=true});
+$("#orderForm").addEventListener("submit",async e=>{e.preventDefault();const m=$("#oMsg");
+  if(!db||!me)return needDb(m);
+  const p=products.find(x=>x.id===orderPid);if(!p)return;
+  m.textContent="שולח…";m.className="msg";
+  try{const o={pid:p.id,title:p.title,price:p.price,note:$("#oNote").value.trim(),at:Date.now()};
+    await saveMember({name:$("#oName").value.trim(),phone:$("#oPhone").value.trim(),ig:$("#oIg").value.trim(),orders:[o,...((member&&member.orders)||[])].slice(0,50)});
+    m.textContent="ההזמנה נשלחה! ניצור איתכם קשר בקרוב.";m.className="msg ok";$("#oNote").value="";
+  }catch(err){m.textContent=err&&err.code==="invalid_argument"?"אין לכם הרשאה לשלוח מהעמוד הזה. כתבו לנו באינסטגרם @tomer_zilber.":"השליחה נכשלה. נסו שוב.";m.className="msg err"}});
+// subscription
+$("#subForm").addEventListener("submit",async e=>{e.preventDefault();const m=$("#subMsg");
+  if(!db||!me)return needDb(m);m.textContent="שולח…";m.className="msg";
+  try{await saveMember({name:$("#subName").value.trim(),phone:$("#subPhone").value.trim(),ig:$("#subIg").value.trim(),sub:{plan:"weekly-70",at:Date.now(),status:"pending"}});
+  }catch(err){m.textContent="השליחה נכשלה. נסו שוב.";m.className="msg err"}});
+$("#subCancel").onclick=async()=>{const b=$("#subCancel");
+  if(b.dataset.c!=="1"){b.dataset.c="1";b.textContent="ללחוץ שוב לאישור הביטול";return}
+  try{await saveMember({sub:{...member.sub,status:"cancelled",cancelledAt:Date.now()}});b.dataset.c="";b.textContent="ביטול המנוי"}catch(err){$("#subCancelMsg").textContent="הביטול נכשל. נסו שוב."}};
+// raffles
+function renderRaffles(){
+  const list=[...raffles].sort((a,b)=>(a.status==="done")-(b.status==="done")||(b.created||0)-(a.created||0));
+  $("#raffles").innerHTML=list.map(r=>{
+    const mine=member&&member.raffles&&member.raffles[r.id], ended=r.status==="done"||(r.ends&&r.ends<today());
+    return `<article class="raf"><div class="rimg">${r.img?`<img src="${esc(r.img)}" alt="">`:icon("dress","var(--muted)")}</div><div class="rb">
+     <span class="badge ${r.status==="done"?"done":"open"}">${r.status==="done"?"הסתיימה":ended?"ממתינה להגרלה":"פתוחה עד "+esc(r.ends.split("-").reverse().join("/"))}</span>
+     <h3>${esc(r.title)}</h3><div>הפרס: <b>${esc(r.prize)}</b></div>
+     ${r.status==="done"?`<div class="result">הזוכה: <b>${esc(r.winner||"")}</b></div>`
+      :mine?`<div class="msg ok">אתם בהגרלה! בהצלחה.</div>`
+      :ended?"":`<form class="f" data-raf="${esc(r.id)}"><input name="nm" required maxlength="60" placeholder="שם" value="${esc(member&&member.name||"")}" aria-label="שם"><input name="ph" required maxlength="20" dir="ltr" placeholder="טלפון" value="${esc(member&&member.phone||"")}" aria-label="טלפון"><input name="ig" maxlength="40" dir="ltr" placeholder="@אינסטגרם (לא חובה)" value="${esc(member&&member.ig||"")}" aria-label="אינסטגרם"><label class="check pmeta"><input type="checkbox" name="ok" required> מסכים/ה שהשם או האינסטגרם יפורסמו אם אזכה</label><button class="btn pink" type="submit">השתתפות בהגרלה</button><div class="msg"></div></form>`}
+    </div></article>`}).join("");
+  $("#raffleEmpty").hidden=list.length>0;
+  if(isAdmin)renderAdmin();
+}
+$("#raffles").addEventListener("submit",async e=>{const f=e.target.closest("form[data-raf]");if(!f)return;e.preventDefault();const m=f.querySelector(".msg");
+  if(!db||!me)return needDb(m);m.textContent="נרשם…";
+  try{await saveMember({name:f.nm.value.trim(),phone:f.ph.value.trim(),ig:f.ig.value.trim(),raffles:{...((member&&member.raffles)||{}),[f.dataset.raf]:Date.now()}})}
+  catch(err){m.textContent="ההרשמה נכשלה. נסו שוב.";m.className="msg err"}});
+
+/* ============ ADMIN ============ */
+let members=[];
+async function upload(file){if(!file)return null;if(!assets)throw {code:"no_assets"};const r=await assets.upload(file);return r.url}
+$("#prodForm").addEventListener("submit",async e=>{e.preventDefault();const m=$("#pfMsg");m.textContent="שומר…";m.className="msg";
+  try{const id=$("#pfId").value||("p"+Date.now().toString(36));const old=products.find(p=>p.id===id)||{};
+    const img=await upload($("#pfImg").files[0])||old.img||"";
+    await db.doc("products/"+id).set({...old,id,title:$("#pfName").value.trim(),cat:$("#pfCat").value,dec:$("#pfDec").value,size:$("#pfSize").value.trim(),
+      price:+$("#pfPrice").value,cond:$("#pfCond").value,desc:$("#pfDesc").value.trim(),img,sold:!!old.sold,created:old.created||Date.now()});
+    m.textContent="נשמר ועלה לחנות.";m.className="msg ok";pfReset(false)}
+  catch(err){m.textContent=err&&err.code==="no_assets"?"העלאת תמונות לא זמינה כאן. שמרו בלי תמונה.":"השמירה נכשלה. נסו שוב.";m.className="msg err"}});
+function pfReset(clearMsg=true){$("#prodForm").reset();$("#pfId").value="";$("#pfTitle").textContent="פריט חדש";if(clearMsg)$("#pfMsg").textContent=""}
+$("#pfReset").onclick=()=>pfReset();
+$("#adProds").addEventListener("click",async e=>{const b=e.target.closest("button[data-act]");if(!b)return;const p=products.find(x=>x.id===b.dataset.id);if(!p)return;
+  const act=b.dataset.act;
+  if(act==="edit"){$("#pfId").value=p.id;$("#pfName").value=p.title;$("#pfCat").value=p.cat;$("#pfDec").value=p.dec;$("#pfSize").value=p.size||"";$("#pfPrice").value=p.price;$("#pfCond").value=p.cond;$("#pfDesc").value=p.desc||"";$("#pfTitle").textContent="עריכת פריט";$("#pfName").focus();return}
+  if(act==="sold"){await db.doc("products/"+p.id).update({sold:!p.sold});return}
+  if(act==="del"){if(b.dataset.c!=="1"){b.dataset.c="1";b.textContent="לאשר?";return}await db.doc("products/"+p.id).delete()}});
+$("#rafForm").addEventListener("submit",async e=>{e.preventDefault();const m=$("#rfMsg");m.textContent="שומר…";m.className="msg";
+  try{const id="r"+Date.now().toString(36);const img=await upload($("#rfImg").files[0])||"";
+    await db.doc("raffles/"+id).set({id,title:$("#rfTitle").value.trim(),prize:$("#rfPrize").value.trim(),ends:$("#rfEnd").value,img,status:"open",created:Date.now()});
+    m.textContent="ההגרלה נפתחה.";m.className="msg ok";$("#rafForm").reset()}
+  catch(err){m.textContent=err&&err.code==="no_assets"?"העלאת תמונות לא זמינה כאן. פתחו בלי תמונה.":"השמירה נכשלה.";m.className="msg err"}});
+$("#adRaffles").addEventListener("click",async e=>{const b=e.target.closest("button[data-draw],button[data-rdel]");if(!b)return;
+  if(b.dataset.rdel){if(b.dataset.c!=="1"){b.dataset.c="1";b.textContent="לאשר מחיקה?";return}return db.doc("raffles/"+b.dataset.rdel).delete()}
+  const id=b.dataset.draw, ent=members.filter(x=>x.raffles&&x.raffles[id]);
+  const subs=members.filter(x=>x.sub&&x.sub.status==="active"&&!(x.raffles&&x.raffles[id]));
+  const pool=[...ent,...subs];
+  if(!pool.length){b.textContent="אין משתתפים עדיין";return}
+  const w=pool[Math.floor(Math.random()*pool.length)];
+  const label=w.ig?("@"+w.ig.replace(/^@/,"")):((w.name||"").split(" ")[0]+" "+((w.name||"").split(" ")[1]||"").slice(0,1)+".");
+  await db.doc("raffles/"+id).update({status:"done",winner:label.trim(),winnerId:w._id,drawnAt:Date.now()})});
+function renderAdmin(){
+  $("#adProds").innerHTML=products.slice().sort((a,b)=>(b.created||0)-(a.created||0)).map(p=>`<tr><td>${esc(p.title)}<div class="pmeta">${esc(catName(p.cat))} · ${esc(decName(p.dec||""))}</div></td><td class="num">${ils(p.price)}</td><td>${p.sold?"נמכר":"במלאי"}</td>
+    <td style="white-space:nowrap"><button class="btn ghost sm" data-act="edit" data-id="${esc(p.id)}">עריכה</button> <button class="btn ghost sm" data-act="sold" data-id="${esc(p.id)}">${p.sold?"החזרה למלאי":"סימון כנמכר"}</button> <button class="btn ghost sm" data-act="del" data-id="${esc(p.id)}">מחיקה</button></td></tr>`).join("")||`<tr><td colspan="4" class="pmeta">עוד אין פריטים. הוסיפו את הראשון בטופס.</td></tr>`;
+  $("#adRaffles").innerHTML=raffles.map(r=>{const n=members.filter(x=>x.raffles&&x.raffles[r.id]).length;
+    return `<div style="border-bottom:1px dashed var(--line);padding-block:10px"><b>${esc(r.title)}</b> · ${esc(r.prize)}<div class="pmeta">${n} משתתפים (+ מנויים פעילים) · סיום ${esc(r.ends)}${r.status==="done"?` · זוכה: ${esc(r.winner)} ${esc((members.find(m=>m._id===r.winnerId)||{}).phone||"")}`:""}</div>
+     <div style="display:flex;gap:6px;margin-top:6px">${r.status==="done"?"":`<button class="btn pink sm" data-draw="${esc(r.id)}">הגרלת זוכה</button>`}<button class="btn ghost sm" data-rdel="${esc(r.id)}">מחיקה</button></div></div>`}).join("")||`<p class="pmeta">אין הגרלות.</p>`;
+  const orders=[];members.forEach(x=>(x.orders||[]).forEach(o=>orders.push([o,x])));orders.sort((a,b)=>b[0].at-a[0].at);
+  $("#adOrders").innerHTML=orders.map(([o,x])=>`<tr><td class="num">${fmtDate(o.at)}</td><td>${esc(o.title)} · ${ils(o.price)}</td><td>${esc(x.name)}${x.ig?`<div class="pmeta" dir="ltr">${esc(x.ig)}</div>`:""}</td><td dir="ltr" style="user-select:all">${esc(x.phone)}</td><td>${esc(o.note)}</td></tr>`).join("")||`<tr><td colspan="5" class="pmeta">אין הזמנות עדיין.</td></tr>`;
+  const subs=members.filter(x=>x.sub);
+  $("#adSubs").innerHTML=subs.map(x=>`<tr><td class="num">${fmtDate(x.sub.at)}</td><td>${esc(x.name)}</td><td dir="ltr" style="user-select:all">${esc(x.phone)}</td><td dir="ltr">${esc(x.ig)}</td>
+    <td>${x.sub.status==="cancelled"?"בוטל":x.sub.status==="active"?"פעיל":"ממתין לתשלום"} ${x.sub.status==="pending"?`<button class="btn ghost sm" data-activate="${esc(x._id)}">סימון כשולם</button>`:""}</td></tr>`).join("")||`<tr><td colspan="5" class="pmeta">אין מנויים עדיין.</td></tr>`;
+}
+$("#adSubs").addEventListener("click",async e=>{const b=e.target.closest("[data-activate]");if(!b)return;const x=members.find(m=>m._id===b.dataset.activate);
+  if(x)await db.doc("members/"+x._id).update({sub:{...x.sub,status:"active",paidAt:Date.now()}})});
+
+async function init(){
+  if(!window.claude||!claude.use){$("#shopEmpty").hidden=false;return}
+  const [d,u]=await Promise.all([claude.use("db"),claude.use("user")]);
+  if(!d){return}
+  db=d; me=u?await u.id():null;
+  db.collection("products").onSnapshot(s=>{products=s.docs.map(x=>({...x.data(),id:x.id}));renderShop();if(isAdmin)renderAdmin()});
+  db.collection("raffles").onSnapshot(s=>{raffles=s.docs.map(x=>({...x.data(),id:x.id}));renderRaffles()});
+  if(me){try{const s=await memberRef().get();if(s.exists)member=s.data()}catch(e){} renderMemberBits()}
+  isAdmin=u?await u.canEdit():false;
+  if(isAdmin){$("#adminTab").hidden=false; assets=await claude.use("assets");
+    db.collection("members").onSnapshot(s=>{members=s.docs.map(x=>({...x.data(),_id:x.id}));renderAdmin()});
+    if(store.get("tv_tab","")==="admin")show("admin")}
+}
+renderShop();
+show(location.hash.slice(1)||store.get("tv_tab","shop"));
+init();
+</script>
+
+</body>
+</html>
